@@ -1,5 +1,6 @@
 #include "ProjetII.h"
 #include <QtWidgets/QApplication>
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -7,4 +8,7 @@ int main(int argc, char *argv[])
 	ProjetII w;
 	w.show();
 	return a.exec();
+
+	
+
 }
