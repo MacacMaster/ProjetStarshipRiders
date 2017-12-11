@@ -23,7 +23,7 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Generated Files">
+    <Filter Include="Form Files\Generated Files">
       <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
       <Extensions>moc;h;cpp</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
@@ -37,37 +37,37 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ProjetII.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_ProjetII.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_ProjetII.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QPolygonEditor.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_QPolygonEditor.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QRealValueBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_QRealValueBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QColorBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_QColorBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_QIntValueBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_QIntValueBox.cpp">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ProjetII.h">
-      <Filter>Generated Files</Filter>
+      <Filter>Form Files\Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="MathUtil.h">
       <Filter>Header Files</Filter>
