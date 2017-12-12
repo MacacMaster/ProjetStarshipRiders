@@ -15,17 +15,27 @@ ProjetII::ProjetII(QWidget *parent)
 	//Predefini Horizon 6t k
 	generate_Horizon_6t_k();
 
+	//ColorBox
+	colorBox = new QColorBox;
+
 
 	setCentralWidget(mSceneControl);
 
-	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
+
 	mTimer.start(30);
+	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
+	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
+
+	colorBox->setColor(mShuttle->shape()->brush().color());	//sychronize colorBox color with shuttle color
+	
+	
+	//Initialize editor this way
+
 }
 
 
 void ProjetII::generate_Horizon_6t_k()
 {
-
 	qreal size{ mShuttleEditor->outputScale() };
 
 	// Step 1 - Build shuttle with a polygonal shape (instead of the default circular shape)
@@ -165,15 +175,16 @@ void ProjetII::addNewThruster(QSceneModel * model,
 }
 
 
-/*void ProjetII::paint()
-{
-
-}*/
-
-
 void ProjetII::tic() {
-QPainter painter(mSceneControl);
 
-mSceneModel.tic(0.003);
-ProjetII::mShuttle->paint(painter);
+	mSceneModel.tic(0.03);
+	mSceneControl->update();
+}
+
+void ProjetII::updateShuttleFromGUI(){
+
+	//...
+
+	mShuttle->shape()->setBrush(colorBox->color());
+
 }

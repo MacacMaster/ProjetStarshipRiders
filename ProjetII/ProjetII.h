@@ -13,6 +13,7 @@
 #include "QPolygonEditor.h"
 #include "QPolygonFactory.h"
 #include "QTimer.h"
+#include "QColorBox.h"
 
 class ProjetII : public QMainWindow
 {
@@ -45,10 +46,14 @@ private:
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
 
+	QColorBox *colorBox;
+
 	QTimer mTimer;
 
 
 	private slots:
 	void tic();
 
+	protected slots:
+	void updateShuttleFromGUI();
 };
