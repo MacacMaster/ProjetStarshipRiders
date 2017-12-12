@@ -2,13 +2,27 @@
 
 ProjetII::ProjetII(QWidget *parent)
 	: QMainWindow(parent),
-	mSceneSize(500.0, 500.0),
+	mSceneSize(800.0, 800.0),
 	mSceneModel(mSceneSize),
 	mShuttleEditor(new QPolygonEditor())
 {
 	ui.setupUi(this);
+	//Empty widget for layout
+	QWidget * mainWidget = new QWidget;
+	QHBoxLayout * mainLayout = new QHBoxLayout;
+	QPolygonEditor *polygonEditor = new QPolygonEditor;
+	QTabWidget *tabWidget=new QTabWidget;
 
-	//Scene
+	
+	tabWidget->addTab(polygonEditor, tr("Vehicule"));
+	tabWidget->addTab(polygonEditor, tr("Reservoir"));
+	tabWidget->addTab(polygonEditor, tr("Propulseurs"));
+	tabWidget->addTab(polygonEditor, tr("Simulation"));
+	tabWidget->addTab(polygonEditor, tr("Potato"));
+	tabWidget->addTab(polygonEditor, tr("Patate"));
+
+
+	//Scene (Painter widget)
 	mSceneControl = new QSceneViewController();
 	mSceneControl->setSceneModel(&mSceneModel);
 
@@ -19,7 +33,11 @@ ProjetII::ProjetII(QWidget *parent)
 	colorBox = new QColorBox;
 
 
-	setCentralWidget(mSceneControl);
+	//setCentralWidget(mSceneControl);
+	setCentralWidget(mainWidget);
+	mainWidget->setLayout(mainLayout);
+	mainLayout->addWidget(mSceneControl);
+	mainLayout->addWidget(tabWidget);
 
 
 	mTimer.start(30);

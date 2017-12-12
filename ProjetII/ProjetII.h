@@ -14,6 +14,7 @@
 #include "QPolygonFactory.h"
 #include "QTimer.h"
 #include "QColorBox.h"
+#include <QtWidgets/QHBoxLayout>
 
 class ProjetII : public QMainWindow
 {
