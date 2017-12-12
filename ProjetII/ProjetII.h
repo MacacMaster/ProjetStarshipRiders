@@ -15,7 +15,9 @@
 #include "QTimer.h"
 #include "QColorBox.h"
 #include <QtWidgets/QHBoxLayout>
-
+#include <QtWidgets/QGroupBox>
+#include "QRealValueBox.h"
+#include <QtWidgets/QLineEdit>
 class ProjetII : public QMainWindow
 {
 	Q_OBJECT

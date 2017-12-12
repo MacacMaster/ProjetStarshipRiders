@@ -1,5 +1,11 @@
 #include "ProjetII.h"
 
+/*
+* http://doc.qt.io/qt-5/qgroupbox.html#details
+* http://doc.qt.io/qt-5/qtabwidget.html#details
+*/
+
+
 ProjetII::ProjetII(QWidget *parent)
 	: QMainWindow(parent),
 	mSceneSize(800.0, 800.0),
@@ -10,16 +16,54 @@ ProjetII::ProjetII(QWidget *parent)
 	//Empty widget for layout
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
-	QPolygonEditor *polygonEditor = new QPolygonEditor;
 	QTabWidget *tabWidget=new QTabWidget;
-
 	
-	tabWidget->addTab(polygonEditor, tr("Vehicule"));
-	tabWidget->addTab(polygonEditor, tr("Reservoir"));
-	tabWidget->addTab(polygonEditor, tr("Propulseurs"));
-	tabWidget->addTab(polygonEditor, tr("Simulation"));
-	tabWidget->addTab(polygonEditor, tr("Potato"));
-	tabWidget->addTab(polygonEditor, tr("Patate"));
+	
+	//
+	QWidget *vehicule = new QWidget;
+	
+	//PolygonEditor (Needs Resize)
+	QPolygonEditor *polygonEditor = new QPolygonEditor(200);
+	QGroupBox *polygonEditorGB = new QGroupBox(tr("Forme"));
+	polygonEditorGB->setLayout(new QVBoxLayout);
+	polygonEditorGB->layout()->addWidget(polygonEditor);
+
+	//Characteristiques
+	QGroupBox *characteristiquesGB = new QGroupBox(tr("Characteristiques"));
+	characteristiquesGB->setLayout(new QVBoxLayout);
+	//Nom
+	QWidget *nomVaisseau = new QWidget;
+	nomVaisseau->setLayout(new QHBoxLayout);
+	QLabel *labelNom = new QLabel;
+	labelNom->setText("Nom:");
+	labelNom->setAlignment(Qt::AlignLeft);
+	labelNom->setMinimumWidth(100);
+	QLineEdit *lineNom = new QLineEdit;
+	nomVaisseau->layout()->addWidget(labelNom);
+	nomVaisseau->layout()->addWidget(lineNom);
+
+
+	//MasseSurfacique
+	QRealValueBox *masseSurfacique= new QRealValueBox;
+	masseSurfacique->addTitle("Masse Surfacique",100);
+	masseSurfacique->addUnit("kg",20);
+	
+	characteristiquesGB->layout()->addWidget(nomVaisseau);
+	characteristiquesGB->layout()->addWidget(masseSurfacique);
+	//Tab  Vehicule
+	vehicule->setLayout(new QVBoxLayout);
+	vehicule->layout()->addWidget(characteristiquesGB);
+	vehicule->layout()->addWidget(polygonEditorGB);
+
+
+
+	//Create TabWidget
+	tabWidget->addTab(vehicule, tr("Vehicule"));
+	tabWidget->addTab(new QLabel, tr("Reservoir"));
+	tabWidget->addTab(new QLabel, tr("Propulseurs"));
+	tabWidget->addTab(new QLabel, tr("Simulation"));
+	tabWidget->addTab(new QLabel, tr("Potato"));
+	tabWidget->addTab(new QLabel, tr("Patate"));
 
 
 	//Scene (Painter widget)
@@ -48,6 +92,7 @@ ProjetII::ProjetII(QWidget *parent)
 	
 	
 	//Initialize editor this way
+
 
 }
 
