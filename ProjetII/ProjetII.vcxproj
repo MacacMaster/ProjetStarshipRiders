@@ -106,6 +106,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="OngletNav.cpp" />
     <ClCompile Include="ProjetII.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,6 +136,20 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ProjetII.h" />
     <ClInclude Include="MathUtil.h" />
+    <CustomBuild Include="OngletNav.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </Command>
+    </CustomBuild>
     <ClInclude Include="QAsteroid.h" />
     <ClInclude Include="QCircularBody.h" />
     <ClInclude Include="QRectangularBody.h" />

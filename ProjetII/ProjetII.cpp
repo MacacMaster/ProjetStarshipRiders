@@ -1,5 +1,6 @@
 #include "ProjetII.h"
 
+
 /*
 * http://doc.qt.io/qt-5/qgroupbox.html#details
 * http://doc.qt.io/qt-5/qtabwidget.html#details
@@ -19,6 +20,10 @@ ProjetII::ProjetII(QWidget *parent)
 	QTabWidget *tabWidget=new QTabWidget;
 	
 	
+	//Onglet Navette predeterminee
+	OngletNav *ongletNav = new OngletNav();
+
+
 	//
 	QWidget *vehicule = new QWidget;
 	
@@ -58,6 +63,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Create TabWidget
+	tabWidget->addTab(ongletNav, tr("Vehicule"));
 	tabWidget->addTab(vehicule, tr("Vehicule"));
 	tabWidget->addTab(new QLabel, tr("Reservoir"));
 	tabWidget->addTab(new QLabel, tr("Propulseurs"));
@@ -76,13 +82,14 @@ ProjetII::ProjetII(QWidget *parent)
 	//ColorBox
 	colorBox = new QColorBox;
 
-
+	
 	//setCentralWidget(mSceneControl);
 	setCentralWidget(mainWidget);
 	mainWidget->setLayout(mainLayout);
 	mainLayout->addWidget(mSceneControl);
 	mainLayout->addWidget(tabWidget);
-
+	
+	
 
 	mTimer.start(30);
 	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 

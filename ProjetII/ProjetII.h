@@ -18,6 +18,8 @@
 #include <QtWidgets/QGroupBox>
 #include "QRealValueBox.h"
 #include <QtWidgets/QLineEdit>
+#include "OngletNav.h"
+
 class ProjetII : public QMainWindow
 {
 	Q_OBJECT
@@ -49,8 +51,10 @@ private:
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
 
-	QColorBox *colorBox;
+	
 
+
+	QColorBox *colorBox;
 	QTimer mTimer;
 
 
