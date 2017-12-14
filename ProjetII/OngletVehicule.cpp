@@ -2,40 +2,41 @@
 
 
 
-OngletVehicule::OngletVehicule(QWidget *parent)
+OngletVehicule::OngletVehicule(QPolygonF polygonF,QWidget *parent)
 	: QWidget(parent)
 {
 	//PolygonEditor (Needs Resize)
-	polygonEditor = new QPolygonEditor(200);
-	polygonEditorGB = new QGroupBox(tr("Forme"));
-	polygonEditorGB->setLayout(new QVBoxLayout);
-	polygonEditorGB->layout()->addWidget(polygonEditor);
+	mPolygonEditor = new QPolygonEditor(200);
+	mPolygonEditor->setPolygon(polygonF);
+	mPolygonEditorGB = new QGroupBox(tr("Forme"));
+	mPolygonEditorGB->setLayout(new QVBoxLayout);
+	mPolygonEditorGB->layout()->addWidget(mPolygonEditor);
 
 	//Characteristiques
-	characteristiquesGB = new QGroupBox(tr("Characteristiques"));
-	characteristiquesGB->setLayout(new QVBoxLayout);
+	mCharacteristiquesGB = new QGroupBox(tr("Characteristiques"));
+	mCharacteristiquesGB->setLayout(new QVBoxLayout);
 	//Nom
-	nomVaisseau = new QWidget;
-	nomVaisseau->setLayout(new QHBoxLayout);
-	labelNom = new QLabel;
-	labelNom->setText("Nom:");
-	labelNom->setAlignment(Qt::AlignLeft);
-	labelNom->setMinimumWidth(100);
-	lineNom = new QLineEdit;
-	nomVaisseau->layout()->addWidget(labelNom);
-	nomVaisseau->layout()->addWidget(lineNom);
+	mNomVaisseau = new QWidget;
+	mNomVaisseau->setLayout(new QHBoxLayout);
+	mLabelNom = new QLabel;
+	mLabelNom->setText("Nom:");
+	mLabelNom->setAlignment(Qt::AlignLeft);
+	mLabelNom->setMinimumWidth(100);
+	mLineNom = new QLineEdit;
+	mNomVaisseau->layout()->addWidget(mLabelNom);
+	mNomVaisseau->layout()->addWidget(mLineNom);
 
 	//MasseSurfacique
-	masseSurfacique = new QRealValueBox;
-	masseSurfacique->addTitle("Masse Surfacique", 100);
-	masseSurfacique->addUnit("kg", 20);
+	mMasseSurfacique = new QRealValueBox;
+	mMasseSurfacique->addTitle("Masse Surfacique", 100);
+	mMasseSurfacique->addUnit("kg", 20);
 
-	characteristiquesGB->layout()->addWidget(nomVaisseau);
-	characteristiquesGB->layout()->addWidget(masseSurfacique);
+	mCharacteristiquesGB->layout()->addWidget(mNomVaisseau);
+	mCharacteristiquesGB->layout()->addWidget(mMasseSurfacique);
 	//Tab  Vehicule
 	setLayout(new QVBoxLayout);
-	layout()->addWidget(characteristiquesGB);
-	layout()->addWidget(polygonEditorGB);
+	layout()->addWidget(mCharacteristiquesGB);
+	layout()->addWidget(mPolygonEditorGB);
 }
 
 

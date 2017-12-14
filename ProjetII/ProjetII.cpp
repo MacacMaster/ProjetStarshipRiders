@@ -21,27 +21,10 @@ ProjetII::ProjetII(QWidget *parent)
 	QTabWidget *tabWidget=new QTabWidget;
 	
 	
+	
 	//Onglet Navette predeterminee
 	ongletNav = new OngletNav;
 
-	//Onglet pour vehicule
-	OngletVehicule *ongletVeh = new OngletVehicule();
-
-	//Onglet pour Reservoir
-
-
-	
-
-
-
-	//Create TabWidget
-	tabWidget->addTab(ongletNav, tr("Navette"));
-	tabWidget->addTab(ongletVeh, tr("Vehicule"));
-	tabWidget->addTab(new QLabel, tr("Reservoir"));
-	tabWidget->addTab(new QLabel, tr("Propulseurs"));
-	tabWidget->addTab(new QLabel, tr("Simulation"));
-	tabWidget->addTab(new QLabel, tr("Potato"));
-	tabWidget->addTab(new QLabel, tr("Patate"));
 
 
 	//Scene (Painter widget)
@@ -72,6 +55,29 @@ ProjetII::ProjetII(QWidget *parent)
 	colorBox->setColor(mShuttle->shape()->brush().color());	//sychronize colorBox color with shuttle color
 	
 	
+
+	//Onglet Navette predeterminee
+	OngletNav *ongletNav = new OngletNav();
+
+	OngletVehicule *ongletVeh = new OngletVehicule(mShuttleShape);
+
+	//Onglet pour Reservoir
+
+
+	//Initial Slots and Signals and Shape
+	//ongletVeh->polygonEditor->setPolygon(mShuttleShape);
+
+
+	//Create TabWidget
+	tabWidget->addTab(ongletNav, tr("Navette"));
+	tabWidget->addTab(ongletVeh, tr("Vehicule"));
+	tabWidget->addTab(new QLabel, tr("Reservoir"));
+	tabWidget->addTab(new QLabel, tr("Propulseurs"));
+	tabWidget->addTab(new QLabel, tr("Simulation"));
+	tabWidget->addTab(new QLabel, tr("Potato"));
+	tabWidget->addTab(new QLabel, tr("Patate"));
+
+
 	//Initialize editor this way
 
 
@@ -90,8 +96,7 @@ void ProjetII::generate_Horizon_6t_k()
 
 	// Step 1.2 - Create the polygon for the body
 	// Step 1.2.1 - Create unit polygon
-	QPolygonF shutteShape;
-	shutteShape << QPointF(1.000000, 0.000000)
+	mShuttleShape << QPointF(1.000000, 0.000000)
 		<< QPointF(1.000000, -0.069444)
 		<< QPointF(0.930556, -0.069444)
 		<< QPointF(0.868056, -0.111111)
@@ -130,14 +135,14 @@ void ProjetII::generate_Horizon_6t_k()
 		<< QPointF(0.930556, 0.069444)
 		<< QPointF(1.000000, 0.069444)
 		<< QPointF(1.000000, 0.000000);
-	shutteShape.translate(-0.5, 0.0);
+	mShuttleShape.translate(-0.5, 0.0);
 	size *= 2.0;
 	// Step 1.2.2 - Scaling the polygon
-	for (auto & point : shutteShape) {
+	for (auto & point : mShuttleShape) {
 		point *= size;
 	}
 	// Step 1.2.3 - Assigning the polygon
-	static_cast<QPolygonalBody*>(mShuttle->shape())->setPolygon(shutteShape);
+	static_cast<QPolygonalBody*>(mShuttle->shape())->setPolygon(mShuttleShape);
 
 	// Step 1.3 - Defining the shape name and color
 	mShuttle->setName("Horizon 6t K-Shuttle");
@@ -228,7 +233,7 @@ void ProjetII::tic() {
 void ProjetII::updateShuttleFromGUI(){
 
 	//...
-
+	
 	mShuttle->shape()->setBrush(colorBox->color());
 
 }
