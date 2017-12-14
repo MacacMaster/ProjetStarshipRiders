@@ -19,6 +19,7 @@
 #include "QRealValueBox.h"
 #include <QtWidgets/QLineEdit>
 #include "OngletNav.h"
+#include "OngletVehicule.h"
 
 class ProjetII : public QMainWindow
 {
