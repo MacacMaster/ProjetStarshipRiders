@@ -23,12 +23,49 @@ ProjetII::ProjetII(QWidget *parent)
 	//Onglet Navette predeterminee
 	OngletNav *ongletNav = new OngletNav();
 
+
+	//
+	QWidget *vehicule = new QWidget;
 	OngletVehicule *ongletVeh = new OngletVehicule();
 	
+	//PolygonEditor (Needs Resize)
+	QPolygonEditor *polygonEditor = new QPolygonEditor(200);
+	QGroupBox *polygonEditorGB = new QGroupBox(tr("Forme"));
+	polygonEditorGB->setLayout(new QVBoxLayout);
+	polygonEditorGB->layout()->addWidget(polygonEditor);
+
+	//Characteristiques
+	QGroupBox *characteristiquesGB = new QGroupBox(tr("Characteristiques"));
+	characteristiquesGB->setLayout(new QVBoxLayout);
+	//Nom
+	QWidget *nomVaisseau = new QWidget;
+	nomVaisseau->setLayout(new QHBoxLayout);
+	QLabel *labelNom = new QLabel;
+	labelNom->setText("Nom:");
+	labelNom->setAlignment(Qt::AlignLeft);
+	labelNom->setMinimumWidth(100);
+	QLineEdit *lineNom = new QLineEdit;
+	nomVaisseau->layout()->addWidget(labelNom);
+	nomVaisseau->layout()->addWidget(lineNom);
+
+
+	//MasseSurfacique
+	QRealValueBox *masseSurfacique= new QRealValueBox;
+	masseSurfacique->addTitle("Masse Surfacique",100);
+	masseSurfacique->addUnit("kg",20);
+	
+	characteristiquesGB->layout()->addWidget(nomVaisseau);
+	characteristiquesGB->layout()->addWidget(masseSurfacique);
+	//Tab  Vehicule
+	vehicule->setLayout(new QVBoxLayout);
+	vehicule->layout()->addWidget(characteristiquesGB);
+	vehicule->layout()->addWidget(polygonEditorGB);
 
 
 
 	//Create TabWidget
+	tabWidget->addTab(ongletNav, tr("Vehicule"));
+	tabWidget->addTab(vehicule, tr("Vehicule"));
 	tabWidget->addTab(ongletNav, tr("Navette"));
 	tabWidget->addTab(ongletVeh, tr("Vehicule"));
 	tabWidget->addTab(new QLabel, tr("Reservoir"));
