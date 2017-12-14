@@ -1,4 +1,5 @@
 #include "ProjetII.h"
+#include<iostream>
 
 
 /*
@@ -18,8 +19,6 @@ ProjetII::ProjetII(QWidget *parent)
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
 	QTabWidget *tabWidget=new QTabWidget;
-	
-	
 
 
 
@@ -27,8 +26,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mSceneControl = new QSceneViewController();
 	mSceneControl->setSceneModel(&mSceneModel);
 
-	//Predefini Horizon 6t k
-	generate_Horizon_6t_k();
+	
 
 	//ColorBox
 	colorBox = new QColorBox;
@@ -45,6 +43,9 @@ ProjetII::ProjetII(QWidget *parent)
 	mTimer.start(30);
 	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
+	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
+
+	generate_Horizon_6t_k();
 
 	colorBox->setColor(mShuttle->shape()->brush().color());	//sychronize colorBox color with shuttle color
 	
@@ -54,6 +55,9 @@ ProjetII::ProjetII(QWidget *parent)
 	OngletNav *ongletNav = new OngletNav();
 
 	OngletVehicule *ongletVeh = new OngletVehicule(mShuttleShape);
+
+	//Onglet pour Reservoir
+
 
 	//Initial Slots and Signals and Shape
 	//ongletVeh->polygonEditor->setPolygon(mShuttleShape);
@@ -226,5 +230,12 @@ void ProjetII::updateShuttleFromGUI(){
 	//...
 	
 	mShuttle->shape()->setBrush(colorBox->color());
+
+}
+
+
+void ProjetII::createNav() {
+
+	ProjetII::generate_Horizon_6t_k();
 
 }

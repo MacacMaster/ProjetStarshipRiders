@@ -36,12 +36,6 @@
     <ClCompile Include="ProjetII.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ProjetII.cpp">
-      <Filter>Form Files\Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_ProjetII.cpp">
-      <Filter>Form Files\Generated Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_ProjetII.cpp">
       <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
@@ -77,6 +71,18 @@
     </ClCompile>
     <ClCompile Include="OngletVehicule.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ProjetII.cpp">
+      <Filter>Form Files\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ProjetII.cpp">
+      <Filter>Form Files\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OngletNav.cpp">
+      <Filter>Form Files\Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OngletNav.cpp">
+      <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -15,11 +15,11 @@ OngletNav::OngletNav(QWidget *parent)
 	navSelectionLayout = new QVBoxLayout;
 	navSelectionGB = new QGroupBox("Selection");
 	navBtnCreer = new QPushButton("Creer");
-	comboBox = new QComboBox(this);
-	comboBox->addItems(navettesList);
+	mComboBox = new QComboBox(this);
+	mComboBox->addItems(navettesList);
 	
 
-	navSelectionLayout->addWidget(comboBox);
+	navSelectionLayout->addWidget(mComboBox);
 	navSelectionLayout->addWidget(navBoxTaille);
 	navSelectionLayout->addWidget(navBtnCreer);
 	navSelectionGB->setLayout(navSelectionLayout);
@@ -31,6 +31,8 @@ OngletNav::OngletNav(QWidget *parent)
 	setMaximumHeight(150);
 	setLayout(navWidgetLayout);
 
+
+	connect(navBtnCreer, &QPushButton::clicked, this, &OngletNav::navCreated);
 }
 
 OngletNav::~OngletNav()
