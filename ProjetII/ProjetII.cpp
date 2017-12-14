@@ -43,8 +43,10 @@ ProjetII::ProjetII(QWidget *parent)
 	
 
 	//Onglet Navette predeterminee
-
 	mOngletVeh = new OngletVehicule(mShuttle);
+	//Onglet pour Reservoir
+
+
 
 	mTimer.start(30);
 	//connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
@@ -53,19 +55,9 @@ ProjetII::ProjetII(QWidget *parent)
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
 
 
-	generate_Horizon_6t_k();
-	
-
-	
-	
-	
-
-	//Onglet pour Reservoir
 
 
-	//Initial Slots and Signals and Shape
-	//ongletVeh->polygonEditor->setPolygon(mShuttleShape);
-
+	//Create TabView
 	mTabWidget->addTab(ongletNav, tr("Navette"));
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
 	mTabWidget->addTab(new QLabel, tr("Reservoir"));
@@ -73,12 +65,6 @@ ProjetII::ProjetII(QWidget *parent)
 	mTabWidget->addTab(new QLabel, tr("Simulation"));
 	mTabWidget->addTab(new QLabel, tr("Potato"));
 	mTabWidget->addTab(new QLabel, tr("Patate"));
-
-
-
-
-	//Initialize editor this way
-
 
 }
 
