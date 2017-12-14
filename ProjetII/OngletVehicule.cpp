@@ -25,7 +25,6 @@ OngletVehicule::OngletVehicule(QWidget *parent)
 	nomVaisseau->layout()->addWidget(labelNom);
 	nomVaisseau->layout()->addWidget(lineNom);
 
-
 	//MasseSurfacique
 	masseSurfacique = new QRealValueBox;
 	masseSurfacique->addTitle("Masse Surfacique", 100);
