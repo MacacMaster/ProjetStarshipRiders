@@ -22,7 +22,7 @@ ProjetII::ProjetII(QWidget *parent)
 	
 	
 	//Onglet Navette predeterminee
-	OngletNav *ongletNav = new OngletNav();
+	ongletNav = new OngletNav;
 
 	//Onglet pour vehicule
 	OngletVehicule *ongletVeh = new OngletVehicule();
@@ -68,7 +68,7 @@ ProjetII::ProjetII(QWidget *parent)
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
 
 	generate_Horizon_6t_k();
-
+	
 	colorBox->setColor(mShuttle->shape()->brush().color());	//sychronize colorBox color with shuttle color
 	
 	
@@ -236,6 +236,7 @@ void ProjetII::updateShuttleFromGUI(){
 
 void ProjetII::createNav() {
 
-	ProjetII::generate_Horizon_6t_k();
-
+	mShuttleEditor->setOutputScale(ongletNav->navBoxTaille()->value());
+	generate_Horizon_6t_k();
+	mSceneControl->setFocus();
 }

@@ -22,7 +22,8 @@
 #include "OngletNav.h"
 #include "OngletVehicule.h"
 
-class ProjetII : public QMainWindow
+class ProjetII
+	: public QMainWindow
 {
 	Q_OBJECT
 
@@ -40,7 +41,7 @@ public:
 		QPen const & pen,
 		QKeySequence const & key);
 
-	//void paint();
+	
 
 private:
 	Ui::ProjetIIClass ui;
@@ -52,6 +53,8 @@ private:
 	QPolygonEditor *mShuttleEditor;
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
+	
+	OngletNav *ongletNav;
 
 	
 

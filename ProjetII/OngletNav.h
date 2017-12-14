@@ -1,6 +1,15 @@
-#pragma once
+#ifndef ONGLET_NAV
+#define ONGLET_NAV
+#include <QtWidgets/QMainWindow>
 
-#include "ProjetII.h"
+
+
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QGroupBox>
+#include "QRealValueBox.h"
+#include <qpushbutton.h>
+#include "qcombobox.h"
+
 
 
 class OngletNav : public QWidget
@@ -11,13 +20,13 @@ public:
 	OngletNav(QWidget *parent = nullptr);
 	~OngletNav();
 
-	QComboBox* comboBox() { return mComboBox; }
+	QRealValueBox* navBoxTaille() { return mNavBoxTaille; }
 
 private:
 	QVBoxLayout *navWidgetLayout, *navSelectionLayout;
 	QGroupBox *navSelectionGB;
 	QComboBox *mComboBox;
-	QRealValueBox *navBoxTaille;
+	QRealValueBox *mNavBoxTaille;
 	QPushButton *navBtnCreer;
 	QStringList navettesList{ "Horizon 6TK", "Navette2" };
 
@@ -25,3 +34,4 @@ private:
 signals:
 	void navCreated();
 };
+#endif // ONGLET_NAV
