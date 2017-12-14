@@ -26,6 +26,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 	//
 	QWidget *vehicule = new QWidget;
+	OngletVehicule *ongletVeh = new OngletVehicule();
 	
 	//PolygonEditor (Needs Resize)
 	QPolygonEditor *polygonEditor = new QPolygonEditor(200);
@@ -63,8 +64,10 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Create TabWidget
-	tabWidget->addTab(ongletNav, tr("Navette predeterminee"));
+	tabWidget->addTab(ongletNav, tr("Vehicule"));
 	tabWidget->addTab(vehicule, tr("Vehicule"));
+	tabWidget->addTab(ongletNav, tr("Navette"));
+	tabWidget->addTab(ongletVeh, tr("Vehicule"));
 	tabWidget->addTab(new QLabel, tr("Reservoir"));
 	tabWidget->addTab(new QLabel, tr("Propulseurs"));
 	tabWidget->addTab(new QLabel, tr("Simulation"));
@@ -258,4 +261,3 @@ void ProjetII::updateShuttleFromGUI(){
 	mShuttle->shape()->setBrush(colorBox->color());
 
 }
-

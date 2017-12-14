@@ -20,6 +20,7 @@
 #include <QtWidgets/QLineEdit>
 #include "qcombobox.h"
 #include "OngletNav.h"
+#include "OngletVehicule.h"
 
 class ProjetII : public QMainWindow
 {

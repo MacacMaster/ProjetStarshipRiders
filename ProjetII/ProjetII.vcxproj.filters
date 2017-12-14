@@ -72,6 +72,12 @@
     <ClCompile Include="OngletNav.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NavettePredeterminee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OngletVehicule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ProjetII.h">
@@ -167,6 +173,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QShuttle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NavettePredeterminee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OngletVehicule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

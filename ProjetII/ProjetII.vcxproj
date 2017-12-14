@@ -106,7 +106,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NavettePredeterminee.cpp" />
     <ClCompile Include="OngletNav.cpp" />
+    <ClCompile Include="OngletVehicule.cpp" />
     <ClCompile Include="ProjetII.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +152,8 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </Command>
     </CustomBuild>
+    <ClInclude Include="NavettePredeterminee.h" />
+    <ClInclude Include="OngletVehicule.h" />
     <ClInclude Include="QAsteroid.h" />
     <ClInclude Include="QCircularBody.h" />
     <ClInclude Include="QRectangularBody.h" />
