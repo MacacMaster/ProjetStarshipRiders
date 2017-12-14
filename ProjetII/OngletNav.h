@@ -18,5 +18,5 @@ private:
 	QComboBox *comboBox;
 	QRealValueBox *navBoxTaille;
 	QPushButton *navBtnCreer;
-	QStringList navettesList{ "Navette1", "Navette2" };
+	QStringList navettesList{ "Horizon 6TK", "Navette2" };
 };
