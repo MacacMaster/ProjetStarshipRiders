@@ -15,6 +15,11 @@ OngletNav::OngletNav(QWidget *parent)
 	navSelectionLayout = new QVBoxLayout;
 	navSelectionGB = new QGroupBox("Selection");
 	navBtnCreer = new QPushButton("Creer");
+	comboBox = new QComboBox(this);
+	comboBox->addItems(navettesList);
+	
+
+	navSelectionLayout->addWidget(comboBox);
 	navSelectionLayout->addWidget(navBoxTaille);
 	navSelectionLayout->addWidget(navBtnCreer);
 	navSelectionGB->setLayout(navSelectionLayout);

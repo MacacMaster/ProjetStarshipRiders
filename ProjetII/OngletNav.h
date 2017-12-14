@@ -2,6 +2,7 @@
 
 #include "ProjetII.h"
 
+
 class OngletNav : public QWidget
 {
 	//Q_OBJECT
@@ -14,6 +15,8 @@ public:
 private:
 	QVBoxLayout *navWidgetLayout, *navSelectionLayout;
 	QGroupBox *navSelectionGB;
+	QComboBox *comboBox;
 	QRealValueBox *navBoxTaille;
 	QPushButton *navBtnCreer;
+	QStringList navettesList{ "Navette1", "Navette2" };
 };

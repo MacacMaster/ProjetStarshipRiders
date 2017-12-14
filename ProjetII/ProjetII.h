@@ -18,6 +18,7 @@
 #include <QtWidgets/QGroupBox>
 #include "QRealValueBox.h"
 #include <QtWidgets/QLineEdit>
+#include "qcombobox.h"
 #include "OngletNav.h"
 
 class ProjetII : public QMainWindow

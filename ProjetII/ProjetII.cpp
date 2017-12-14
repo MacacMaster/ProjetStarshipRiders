@@ -63,7 +63,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Create TabWidget
-	tabWidget->addTab(ongletNav, tr("Vehicule"));
+	tabWidget->addTab(ongletNav, tr("Navette predeterminee"));
 	tabWidget->addTab(vehicule, tr("Vehicule"));
 	tabWidget->addTab(new QLabel, tr("Reservoir"));
 	tabWidget->addTab(new QLabel, tr("Propulseurs"));
@@ -258,3 +258,4 @@ void ProjetII::updateShuttleFromGUI(){
 	mShuttle->shape()->setBrush(colorBox->color());
 
 }
+
