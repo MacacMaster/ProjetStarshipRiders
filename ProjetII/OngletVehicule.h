@@ -5,16 +5,18 @@
 class OngletVehicule : public QWidget
 {
 public:
-	OngletVehicule(QWidget *parent = nullptr);
+	OngletVehicule(QPolygonF polygonF,QWidget *parent = nullptr);
 	~OngletVehicule();
 
+	//QPolygonEditor * polygonEditor() { return mPolygonEditor; }
+
 private:
-	QGroupBox *characteristiquesGB;
-	QPolygonEditor *polygonEditor;
-	QGroupBox *polygonEditorGB;
-	QWidget *nomVaisseau;
-	QLabel *labelNom;
-	QLineEdit *lineNom;
-	QRealValueBox *masseSurfacique;
+	QGroupBox *mCharacteristiquesGB;
+	QPolygonEditor *mPolygonEditor;
+	QGroupBox *mPolygonEditorGB;
+	QWidget *mNomVaisseau;
+	QLabel *mLabelNom;
+	QLineEdit *mLineNom;
+	QRealValueBox *mMasseSurfacique;
 };
 

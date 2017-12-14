@@ -49,6 +49,7 @@ private:
 	QSceneModel mSceneModel;
 	QSceneViewController *mSceneControl;
 	QShuttle *mShuttle;
+	QPolygonF mShuttleShape;
 	QPolygonEditor *mShuttleEditor;
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
