@@ -23,7 +23,8 @@
 #include "OngletVehicule.h"
 #include <iostream>
 
-class ProjetII : public QMainWindow
+class ProjetII
+	: public QMainWindow
 {
 	Q_OBJECT
 
@@ -45,6 +46,7 @@ public:
 	QShuttle *shuttle() { return mShuttle; }
 	//void paint();
 
+
 private:
 	Ui::ProjetIIClass ui;
 
@@ -57,7 +59,8 @@ private:
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
 	QTabWidget *mTabWidget;
-	
+
+	OngletNav *ongletNav;
 	OngletVehicule *mOngletVeh;
 
 	QColorBox *colorBox;

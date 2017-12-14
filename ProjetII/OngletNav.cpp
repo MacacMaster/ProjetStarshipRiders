@@ -6,9 +6,9 @@ OngletNav::OngletNav(QWidget *parent)
 {
 
 	//Ensemble pour la taille
-	navBoxTaille = new QRealValueBox;
-	navBoxTaille->addUnit("pixels");
-	navBoxTaille->addTitle("Taille:");
+	mNavBoxTaille = new QRealValueBox;
+	mNavBoxTaille->addUnit("pixels");
+	mNavBoxTaille->addTitle("Taille:");
 	
 
 	//GroupBox Selection
@@ -20,7 +20,7 @@ OngletNav::OngletNav(QWidget *parent)
 	
 
 	navSelectionLayout->addWidget(mComboBox);
-	navSelectionLayout->addWidget(navBoxTaille);
+	navSelectionLayout->addWidget(mNavBoxTaille);
 	navSelectionLayout->addWidget(navBtnCreer);
 	navSelectionGB->setLayout(navSelectionLayout);
 

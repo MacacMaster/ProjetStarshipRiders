@@ -18,7 +18,13 @@ ProjetII::ProjetII(QWidget *parent)
 	//Empty widget for layout
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
+
 	mTabWidget=new QTabWidget;
+
+	
+	
+	//Onglet Navette predeterminee
+	ongletNav = new OngletNav;
 
 
 
@@ -37,7 +43,6 @@ ProjetII::ProjetII(QWidget *parent)
 	
 
 	//Onglet Navette predeterminee
-	OngletNav *ongletNav = new OngletNav();
 
 	mOngletVeh = new OngletVehicule(mShuttle);
 
@@ -47,6 +52,9 @@ ProjetII::ProjetII(QWidget *parent)
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
 
+
+	generate_Horizon_6t_k();
+	
 
 	
 	
@@ -230,6 +238,7 @@ void ProjetII::updateShuttleFromGUI(){
 
 void ProjetII::createNav() {
 
-	ProjetII::generate_Horizon_6t_k();
-
+	mShuttleEditor->setOutputScale(ongletNav->navBoxTaille()->value());
+	generate_Horizon_6t_k();
+	mSceneControl->setFocus();
 }
