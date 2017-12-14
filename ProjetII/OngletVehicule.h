@@ -1,14 +1,31 @@
 #pragma once
 
-#include "ProjetII.h"
+#include <QtWidgets/QMainWindow>
+#include "QShuttle.h"
+#include "QPolygonalBody.h"
+#include "QPolygonEditor.h"
+#include "QPolygonFactory.h"
+#include "QColorBox.h"
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QGroupBox>
+#include "QRealValueBox.h"
+#include <QtWidgets/QLineEdit>
+
 
 class OngletVehicule : public QWidget
 {
+	Q_OBJECT
+
 public:
-	OngletVehicule(QPolygonF polygonF,QWidget *parent = nullptr);
+	OngletVehicule(QShuttle * shuttle,QWidget *parent = nullptr);
 	~OngletVehicule();
 
-	//QPolygonEditor * polygonEditor() { return mPolygonEditor; }
+	QPolygonEditor * polygonEditor() { return mPolygonEditor; }
+	QLineEdit *name() { return mLineNom; }
+	QRealValueBox *surfaceMass() { return mMasseSurfacique; }
+
+	void shuttleChange(QShuttle * shuttle);
+	void shuttleInitialize(QShuttle * shuttle);
 
 private:
 	QGroupBox *mCharacteristiquesGB;
@@ -18,5 +35,8 @@ private:
 	QLabel *mLabelNom;
 	QLineEdit *mLineNom;
 	QRealValueBox *mMasseSurfacique;
+
+signals:
+	void polygonChanged();
 };
 

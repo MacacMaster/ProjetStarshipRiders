@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ProjetII.h"
-#include"QSceneViewController.h"
+#include "QSceneViewController.h"
 #include "QSceneModel.h"
 #include "QShuttle.h"
 #include "QPolygonalBody.h"
@@ -21,6 +21,7 @@
 #include "qcombobox.h"
 #include "OngletNav.h"
 #include "OngletVehicule.h"
+#include <iostream>
 
 class ProjetII : public QMainWindow
 {
@@ -28,6 +29,7 @@ class ProjetII : public QMainWindow
 
 public:
 	ProjetII(QWidget *parent = Q_NULLPTR);
+	void createTab();
 	void generate_Horizon_6t_k();
 	void addNewThruster(QSceneModel * model,
 		QShuttleFuelTank * fuelTank,
@@ -40,6 +42,7 @@ public:
 		QPen const & pen,
 		QKeySequence const & key);
 
+	QShuttle *shuttle() { return mShuttle; }
 	//void paint();
 
 private:
@@ -53,9 +56,9 @@ private:
 	QPolygonEditor *mShuttleEditor;
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
-
+	QTabWidget *mTabWidget;
 	
-
+	OngletVehicule *mOngletVeh;
 
 	QColorBox *colorBox;
 	QTimer mTimer;

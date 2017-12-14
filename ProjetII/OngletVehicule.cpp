@@ -1,13 +1,11 @@
-#include "ongletVehicule.h"
+#include "OngletVehicule.h"
 
-
-
-OngletVehicule::OngletVehicule(QPolygonF polygonF,QWidget *parent)
+OngletVehicule::OngletVehicule(QShuttle * shuttle,QWidget *parent)
 	: QWidget(parent)
 {
 	//PolygonEditor (Needs Resize)
 	mPolygonEditor = new QPolygonEditor(200);
-	mPolygonEditor->setPolygon(polygonF);
+	
 	mPolygonEditorGB = new QGroupBox(tr("Forme"));
 	mPolygonEditorGB->setLayout(new QVBoxLayout);
 	mPolygonEditorGB->layout()->addWidget(mPolygonEditor);
@@ -30,6 +28,7 @@ OngletVehicule::OngletVehicule(QPolygonF polygonF,QWidget *parent)
 	mMasseSurfacique = new QRealValueBox;
 	mMasseSurfacique->addTitle("Masse Surfacique", 100);
 	mMasseSurfacique->addUnit("kg", 20);
+	//mMasseSurfacique
 
 	mCharacteristiquesGB->layout()->addWidget(mNomVaisseau);
 	mCharacteristiquesGB->layout()->addWidget(mMasseSurfacique);
@@ -37,10 +36,35 @@ OngletVehicule::OngletVehicule(QPolygonF polygonF,QWidget *parent)
 	setLayout(new QVBoxLayout);
 	layout()->addWidget(mCharacteristiquesGB);
 	layout()->addWidget(mPolygonEditorGB);
+
+	connect(mPolygonEditor, &QPolygonEditor::polygonUpdated, this, &OngletVehicule::polygonChanged);
+	connect(mLineNom, &QLineEdit::textChanged, this, &OngletVehicule::polygonChanged);
+	connect(mMasseSurfacique, &QRealValueBox::valueChanged, this, &OngletVehicule::polygonChanged);
+
+	shuttleInitialize(shuttle);
+
 }
 
 
 
 OngletVehicule::~OngletVehicule()
 {
+}
+
+void OngletVehicule::shuttleChange(QShuttle * shuttle)
+{
+	static_cast<QPolygonalBody*>(shuttle->shape())->setPolygon(mPolygonEditor->polygon());
+	shuttle->shape()->setBrush(mPolygonEditor->brush());
+	shuttle->shape()->setPen(mPolygonEditor->pen());
+	shuttle->setName(mLineNom->text());
+	shuttle->setSurfaceMass(mMasseSurfacique->value());
+}
+
+void OngletVehicule::shuttleInitialize(QShuttle * shuttle)
+{
+	mPolygonEditor->setPolygon(static_cast<QPolygonalBody*>(shuttle->shape())->polygon());
+	mLineNom->setText(shuttle->name());
+	mMasseSurfacique->setValue(shuttle->surfaceMass());
+	mPolygonEditor->setBrush(shuttle->shape()->brush());	//sychronize colorBox color with shuttle color
+	mPolygonEditor->setPen(shuttle->shape()->pen());
 }

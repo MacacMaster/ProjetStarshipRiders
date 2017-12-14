@@ -1,5 +1,5 @@
 #include "ProjetII.h"
-#include<iostream>
+
 
 
 /*
@@ -18,7 +18,7 @@ ProjetII::ProjetII(QWidget *parent)
 	//Empty widget for layout
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
-	QTabWidget *tabWidget=new QTabWidget;
+	mTabWidget=new QTabWidget;
 
 
 
@@ -26,35 +26,31 @@ ProjetII::ProjetII(QWidget *parent)
 	mSceneControl = new QSceneViewController();
 	mSceneControl->setSceneModel(&mSceneModel);
 
-	
 
-	//ColorBox
-	colorBox = new QColorBox;
-
-	
 	//setCentralWidget(mSceneControl);
 	setCentralWidget(mainWidget);
 	mainWidget->setLayout(mainLayout);
 	mainLayout->addWidget(mSceneControl);
-	mainLayout->addWidget(tabWidget);
+	mainLayout->addWidget(mTabWidget);
 	
-	
-
-	mTimer.start(30);
-	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
-	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
-	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
-
 	generate_Horizon_6t_k();
-
-	colorBox->setColor(mShuttle->shape()->brush().color());	//sychronize colorBox color with shuttle color
-	
 	
 
 	//Onglet Navette predeterminee
 	OngletNav *ongletNav = new OngletNav();
 
-	OngletVehicule *ongletVeh = new OngletVehicule(mShuttleShape);
+	mOngletVeh = new OngletVehicule(mShuttle);
+
+	mTimer.start(30);
+	//connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
+	connect(mOngletVeh, &OngletVehicule::polygonChanged, this, &ProjetII::updateShuttleFromGUI);
+	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
+	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
+
+
+	
+	
+	
 
 	//Onglet pour Reservoir
 
@@ -62,22 +58,21 @@ ProjetII::ProjetII(QWidget *parent)
 	//Initial Slots and Signals and Shape
 	//ongletVeh->polygonEditor->setPolygon(mShuttleShape);
 
+	mTabWidget->addTab(ongletNav, tr("Navette"));
+	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
+	mTabWidget->addTab(new QLabel, tr("Reservoir"));
+	mTabWidget->addTab(new QLabel, tr("Propulseurs"));
+	mTabWidget->addTab(new QLabel, tr("Simulation"));
+	mTabWidget->addTab(new QLabel, tr("Potato"));
+	mTabWidget->addTab(new QLabel, tr("Patate"));
 
-	//Create TabWidget
-	tabWidget->addTab(ongletNav, tr("Navette"));
-	tabWidget->addTab(ongletVeh, tr("Vehicule"));
-	tabWidget->addTab(new QLabel, tr("Reservoir"));
-	tabWidget->addTab(new QLabel, tr("Propulseurs"));
-	tabWidget->addTab(new QLabel, tr("Simulation"));
-	tabWidget->addTab(new QLabel, tr("Potato"));
-	tabWidget->addTab(new QLabel, tr("Patate"));
+
 
 
 	//Initialize editor this way
 
 
 }
-
 
 void ProjetII::generate_Horizon_6t_k()
 {
@@ -141,6 +136,7 @@ void ProjetII::generate_Horizon_6t_k()
 
 	// Step 1.3 - Defining the shape name and color
 	mShuttle->setName("Horizon 6t K-Shuttle");
+	mShuttle->setSurfaceMass(12.5f);
 	mShuttle->shape()->setBrush(QColor(95, 125, 185));
 	mShuttle->shape()->setPen(QPen(QColor(50, 70, 115), 1.0));
 
@@ -227,9 +223,7 @@ void ProjetII::tic() {
 
 void ProjetII::updateShuttleFromGUI(){
 
-	//...
-	
-	mShuttle->shape()->setBrush(colorBox->color());
+	mOngletVeh->shuttleChange(mShuttle);
 
 }
 
