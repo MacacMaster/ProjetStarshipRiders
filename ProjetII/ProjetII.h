@@ -60,9 +60,10 @@ private:
 	QTimer mTimer;
 
 
-	private slots:
+private slots:
 	void tic();
 
-	protected slots:
+protected slots:
 	void updateShuttleFromGUI();
+	void createNav();
 };
