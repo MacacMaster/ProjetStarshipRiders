@@ -12,6 +12,7 @@ public:
 	~OngletNav();
 
 
+
 private:
 	QVBoxLayout *navWidgetLayout, *navSelectionLayout;
 	QGroupBox *navSelectionGB;

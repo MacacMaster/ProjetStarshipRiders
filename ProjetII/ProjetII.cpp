@@ -23,7 +23,13 @@ ProjetII::ProjetII(QWidget *parent)
 	//Onglet Navette predeterminee
 	OngletNav *ongletNav = new OngletNav();
 
+	//Onglet pour vehicule
 	OngletVehicule *ongletVeh = new OngletVehicule();
+
+	//Onglet pour Reservoir
+
+
+	
 
 
 
