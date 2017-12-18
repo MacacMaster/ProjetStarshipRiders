@@ -110,6 +110,7 @@
     <ClCompile Include="OngletNav.cpp" />
     <ClCompile Include="OngletPropulseurs.cpp" />
     <ClCompile Include="OngletReservoir.cpp" />
+    <ClCompile Include="OngletSimulation.cpp" />
     <ClCompile Include="OngletVehicule.cpp" />
     <ClCompile Include="ProjetII.cpp" />
   </ItemGroup>
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ProjetII.h" />
     <ClInclude Include="MathUtil.h" />
+    <ClInclude Include="OngletSimulation.h" />
     <CustomBuild Include="OngletPropulseurs.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing OngletPropulseurs.h...</Message>

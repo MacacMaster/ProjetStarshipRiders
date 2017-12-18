@@ -1,4 +1,5 @@
 #include "OngletPropulseurs.h"
+#include <QShuttleThruster.h>
 
 
 
@@ -94,6 +95,11 @@ OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, QWidget *parent)
 	mMainLayout->addWidget(mPropulseur);
 	mMainLayout->addWidget(mFormePropulseur);
 
+
+	connect(mSelectPropulseurValue, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &OngletPropulseurs::thrusterChanged);
+
+	shuttleInitialize(shuttle);
+
 }
 
 //DRY
@@ -103,6 +109,7 @@ void OngletPropulseurs::createReal(QRealValueBox * qReal,QString title, QString 
 	qReal->setSpinFixedWidth(80);
 	//qReal->setFixedHeight(40);
 	qReal->layout()->setMargin(0);
+	connect(qReal, &QRealValueBox::valueChanged, this, &OngletPropulseurs::polygonChanged);
 	mPropulseur->layout()->addWidget(qReal);
 
 }
@@ -115,6 +122,8 @@ OngletPropulseurs::~OngletPropulseurs()
 //Updates Shuttle from GUI
 void OngletPropulseurs::shuttleChange(QShuttle * shuttle)
 {
+	
+	//setThrusterEfficiency
 	//static_cast<QPolygonalBody*>(shuttle->shape())->setPolygon(mPolygonEditor->polygon());
 	//shuttle->shape()->setBrush(mPolygonEditor->brush());
 	//shuttle->shape()->setPen(mPolygonEditor->pen());
@@ -125,11 +134,27 @@ void OngletPropulseurs::shuttleChange(QShuttle * shuttle)
 //Sets Shuttle Info to GUI
 void OngletPropulseurs::shuttleInitialize(QShuttle * shuttle)
 {
+	int32_t i{ 0 };
+	for (auto a : shuttle->thrusters()) {
+		mSelectPropulseurValue->addItem(QString("Propulseur %1").arg(i));
+		++i;
+	}
+	mNombrePropulseurs->setValue(i);
+	thrusterChanged(0);
+
 	
+
 	//
 	//mPolygonEditor->setPolygon(static_cast<QPolygonalBody*>(shuttle->shape())->polygon());
 	//mLineNom->setText(shuttle->name());
 	//mMasseSurfacique->setValue(shuttle->surfaceMass());
 	//mPolygonEditor->setBrush(shuttle->shape()->brush());	//sychronize colorBox color with shuttle color
 	//mPolygonEditor->setPen(shuttle->shape()->pen());
+}
+
+void OngletPropulseurs::thrusterChanged(int index) {
+	QShuttleThruster *temp = shuttle->thrusters[index];
+
+
+	//mToucheControleValue->setText(temp->massFlowRate());
 }

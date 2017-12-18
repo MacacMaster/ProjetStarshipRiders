@@ -25,9 +25,12 @@ public:
 	~OngletPropulseurs();
 
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
-	void shuttleInitialize(QShuttle * shuttle);//Reads shuttle info and shows in GUI
+	void shuttleInitialize(QShuttle * shuttle);
+
+	//Reads shuttle info and shows in GUI
 
 private:
+	QShuttle * shuttle;
 	QVBoxLayout *mMainLayout;
 	QGroupBox *mPropulsion;
 	QGroupBox *mPropulseur;
@@ -47,6 +50,10 @@ private:
 	QIntValueBox *mNombrePropulseurs;
 
 	void createReal(QRealValueBox * qReal, QString title, QString unit);
+	
+protected slots:
+	void thrusterChanged(int index);
+
 signals:
 	void polygonChanged();
 };

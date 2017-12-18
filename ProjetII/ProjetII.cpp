@@ -58,7 +58,6 @@ ProjetII::ProjetII(QWidget *parent)
 	mTimer.start(30);
 	
 	//Connections
-	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
 	connect(mOngletVeh, &OngletVehicule::polygonChanged, this, &ProjetII::updateShuttleFromGUI);
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
