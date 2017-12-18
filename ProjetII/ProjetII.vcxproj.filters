@@ -66,6 +66,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_OngletVehicule.cpp">
       <Filter>Form Files\Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="OngletReservoir.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OngletPropulseurs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ProjetII.h">
@@ -92,6 +98,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NavettePredeterminee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OngletReservoir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OngletPropulseurs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -79,6 +79,7 @@ void ProjetII::generate_Horizon_6t_k()
 	mSceneModel.setOneShuttle(mShuttle);
 
 	// Step 1.2 - Create the polygon for the body
+	QPolygonF mShuttleShape;
 	// Step 1.2.1 - Create unit polygon
 	mShuttleShape << QPointF(1.000000, 0.000000)
 		<< QPointF(1.000000, -0.069444)

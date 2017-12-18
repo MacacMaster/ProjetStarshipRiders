@@ -1,4 +1,5 @@
-#pragma once
+#ifndef ONGLET_VEHICULE_H
+#define ONGLET_VEHICULE_H
 
 #include <QtWidgets/QMainWindow>
 #include "QShuttle.h"
@@ -24,8 +25,8 @@ public:
 	QLineEdit *name() { return mLineNom; }
 	QRealValueBox *surfaceMass() { return mMasseSurfacique; }
 
-	void shuttleChange(QShuttle * shuttle);
-	void shuttleInitialize(QShuttle * shuttle);
+	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
+	void shuttleInitialize(QShuttle * shuttle);//Reads shuttle info and shows in GUI
 
 private:
 	QGroupBox *mCharacteristiquesGB;
@@ -40,3 +41,4 @@ signals:
 	void polygonChanged();
 };
 
+#endif //ONGLET_VEHICULE_H

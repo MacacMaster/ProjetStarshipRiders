@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PROJETII_H
+#define PROJETII_H
 
 #include <QtWidgets/QMainWindow>
 #include "ui_ProjetII.h"
@@ -14,13 +15,15 @@
 #include "QPolygonFactory.h"
 #include "QTimer.h"
 #include "QColorBox.h"
+#include "QRealValueBox.h"
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QGroupBox>
-#include "QRealValueBox.h"
 #include <QtWidgets/QLineEdit>
-#include "qcombobox.h"
+#include <QtWidgets/QCombobox>
 #include "OngletNav.h"
 #include "OngletVehicule.h"
+#include "OngletReservoir.h"
+#include "OngletPropulseurs.h"
 #include <iostream>
 
 class ProjetII
@@ -54,7 +57,7 @@ private:
 	QSceneModel mSceneModel;
 	QSceneViewController *mSceneControl;
 	QShuttle *mShuttle;
-	QPolygonF mShuttleShape;
+	
 	QPolygonEditor *mShuttleEditor;
 	QShuttleKeyboardController *mShuttleController;
 	QShuttleFuelTank *mShuttleFuelTank;
@@ -62,6 +65,7 @@ private:
 
 	OngletNav *ongletNav;
 	OngletVehicule *mOngletVeh;
+	OngletReservoir *mOngletRes;
 
 	QColorBox *colorBox;
 	QTimer mTimer;
@@ -74,3 +78,5 @@ protected slots:
 	void updateShuttleFromGUI();
 	void createNav();
 };
+
+#endif //PROJETII_H

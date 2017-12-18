@@ -50,7 +50,7 @@ OngletVehicule::OngletVehicule(QShuttle * shuttle,QWidget *parent)
 OngletVehicule::~OngletVehicule()
 {
 }
-
+//Updates Shuttle from GUI
 void OngletVehicule::shuttleChange(QShuttle * shuttle)
 {
 	static_cast<QPolygonalBody*>(shuttle->shape())->setPolygon(mPolygonEditor->polygon());
@@ -60,6 +60,7 @@ void OngletVehicule::shuttleChange(QShuttle * shuttle)
 	shuttle->setSurfaceMass(mMasseSurfacique->value());
 }
 
+//Sets Shuttle Info to GUI
 void OngletVehicule::shuttleInitialize(QShuttle * shuttle)
 {
 	mPolygonEditor->setPolygon(static_cast<QPolygonalBody*>(shuttle->shape())->polygon());

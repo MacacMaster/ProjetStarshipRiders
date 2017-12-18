@@ -1,4 +1,6 @@
-#pragma once
+#ifndef NAVETTE_PREDETERMINEE_H
+#define NAVETTE_PREDETERMINEE_H
+
 #include "ProjetII.h"
 class NavettePredeterminee :
 	public QWidget
@@ -19,3 +21,4 @@ private:
 	QLabel *navLblTaille, *navLblPixel;
 };
 
+#endif //NAVETTE_PREDETERMINEE_H
