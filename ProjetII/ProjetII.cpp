@@ -46,6 +46,8 @@ ProjetII::ProjetII(QWidget *parent)
 	mOngletVeh = new OngletVehicule(mShuttle);
 	//Onglet pour Reservoir
 
+	//Onglet Propulseur
+	mOngletPropulseurs = new OngletPropulseurs(mShuttle);
 
 
 	mTimer.start(30);
@@ -61,7 +63,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mTabWidget->addTab(ongletNav, tr("Navette"));
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
 	mTabWidget->addTab(new QLabel, tr("Reservoir"));
-	mTabWidget->addTab(new QLabel, tr("Propulseurs"));
+	mTabWidget->addTab(mOngletPropulseurs, tr("Propulseurs"));
 	mTabWidget->addTab(new QLabel, tr("Simulation"));
 	mTabWidget->addTab(new QLabel, tr("Potato"));
 	mTabWidget->addTab(new QLabel, tr("Patate"));
@@ -217,7 +219,6 @@ void ProjetII::tic() {
 }
 
 void ProjetII::updateShuttleFromGUI(){
-
 	mOngletVeh->shuttleChange(mShuttle);
 
 }

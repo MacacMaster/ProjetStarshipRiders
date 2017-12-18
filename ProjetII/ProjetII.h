@@ -66,6 +66,7 @@ private:
 	OngletNav *ongletNav;
 	OngletVehicule *mOngletVeh;
 	OngletReservoir *mOngletRes;
+	OngletPropulseurs *mOngletPropulseurs;
 
 	QColorBox *colorBox;
 	QTimer mTimer;
