@@ -18,13 +18,7 @@ ProjetII::ProjetII(QWidget *parent)
 	//Empty widget for layout
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
-
 	mTabWidget=new QTabWidget;
-
-	
-	
-	//Onglet Navette predeterminee
-	ongletNav = new OngletNav;
 
 
 
@@ -39,25 +33,35 @@ ProjetII::ProjetII(QWidget *parent)
 	mainLayout->addWidget(mSceneControl);
 	mainLayout->addWidget(mTabWidget);
 	
+
+	//Generation du premier vaisseau
 	generate_Horizon_6t_k();
-	
+
 
 	//Onglet Navette predeterminee
+	ongletNav = new OngletNav;
+
+	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
+	
 	//Onglet pour Reservoir
 
 	//Onglet Propulseur
 	mOngletPropulseurs = new OngletPropulseurs(mShuttle);
 
 
+
+
+
+
+	//Timer
 	mTimer.start(30);
-	//connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
+	
+	//Connections
+	connect(colorBox, &QColorBox::colorChanged, this, &ProjetII::updateShuttleFromGUI); 
 	connect(mOngletVeh, &OngletVehicule::polygonChanged, this, &ProjetII::updateShuttleFromGUI);
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
-
-
-
 
 	//Create TabView
 	mTabWidget->addTab(ongletNav, tr("Navette"));
