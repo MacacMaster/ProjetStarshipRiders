@@ -37,6 +37,7 @@ public:
 	void fill(qreal level = 1.0);			// to do -> must update the mass
 	qreal takeFuel(qreal fuelAmount);		// to do -> must update the mass
 
+	QSizeF tankSize() const;
 	QColor fuelColor() const;
 	void setTankSize(qreal width, qreal height);
 	void setFuelColor(QColor const & color);

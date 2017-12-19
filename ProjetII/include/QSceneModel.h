@@ -33,7 +33,7 @@ class QSceneModel
 
 public:
 	QSceneModel(QSizeF const & size = QSizeF(100.0, 100.0));
-	QSceneModel(QRectF const & rect = QRectF(0.0, 0.0, 100.0, 100.0));
+	QSceneModel(QRectF const & rect);
 	~QSceneModel();
 
 	void setSize(qreal width, qreal height);

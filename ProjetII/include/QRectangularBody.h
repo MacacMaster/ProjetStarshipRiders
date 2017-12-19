@@ -16,8 +16,9 @@ public:
 
 	virtual QShapeBody * clone() const override;
 
-	qreal width() const { return mWidth; }
-	qreal height() const { return mHeight; }
+	qreal width() const;
+	qreal height() const;
+	QSizeF size() const;
 	void setWidth(qreal width);
 	void setHeight(qreal height);
 	void setSize(qreal width, qreal height);

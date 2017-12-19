@@ -53,7 +53,7 @@ public:
 	bool removeFuelTank(QShuttleFuelTank * fuelTank);
 
 	//! \brief Retourne la liste de propulseurs.
-	QList<QShuttleThruster*> const & thrusters() const { return mThrusters; }
+	QList<QShuttleThruster*> const & thrusters() const;
 	//! \brief Ajoute un nouveau propulseur.
 	//!
 	//!	Le propulseur ajouté devient un enfant de la navette. Il est automatiquement géré par celle-ci. 
@@ -64,6 +64,10 @@ public:
 	bool removeThruster(QShuttleThruster * thruster);
 	//! \brief Retire et détruit tous les le propulseurs_.
 	void removeThrusters();
+	////! \brief Ajoute un nouveau propulseur.
+	////!
+	////!	Le propulseur ajouté devient un enfant de la navette. Il est automatiquement géré par celle-ci. 
+	//void setThrusterQuantity(size_t quantity);
 
 	//! \brief Retourne le contrôleur.
 	QShuttleController * controller();

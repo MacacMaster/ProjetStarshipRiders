@@ -53,6 +53,10 @@ signals:
 protected:
 	QScrollBar * mScrollBar;
 	QSpinBox * mSpinBox;
+
+protected slots:
+	void setValueFromSpinBox(int value);
+	void setValueFromScrollBar(int value);
 };
 
 #endif // Q_INT_VALUE_BOX_H
