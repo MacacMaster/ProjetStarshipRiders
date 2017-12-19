@@ -21,6 +21,10 @@ NavettePredeterminee::NavettePredeterminee(QWidget *parent)
 	navSelectionLayout = new QVBoxLayout;
 	navSelectionGB = new QGroupBox("Selection");
 	navBtnCreer = new QPushButton("Creer");
+	
+	//disable cause bugs -> could integrate SQL and just scrap this shit
+	navBtnCreer->setEnabled(false);
+
 	navSelectionLayout->addWidget(navTailleWidget);
 	navSelectionLayout->addWidget(navBtnCreer);
 	navSelectionGB->setLayout(navSelectionLayout);
@@ -28,7 +32,7 @@ NavettePredeterminee::NavettePredeterminee(QWidget *parent)
 	
 	//Widget de l'onglet (principal)
 	navWidgetLayout = new QVBoxLayout;
-	navWidgetLayout->addWidget(new QLabel("HELLLO"));
+	navWidgetLayout->addWidget(new QLabel("HELLO"));
 	setLayout(navWidgetLayout);
 
 }

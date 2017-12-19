@@ -24,7 +24,6 @@ public:
 	
 
 
-	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);
 
 	~OngletPropulseurs();
 
@@ -44,7 +43,7 @@ private:
 	QComboBox *mSelectPropulseurValue;
 	QLabel *mToucheControleLabel;
 	QKeySequenceEdit *mToucheControleValue;
-	QRealValueBox *mDimension;
+	QRealValueBox *mThrust;
 	QRealValueBox *mMasseSurfacique;
 	QRealValueBox *mDebitCarb;
 	QRealValueBox *mEjectionCarb;
@@ -53,6 +52,7 @@ private:
 	QRealValueBox *mOrientation;
 	QIntValueBox *mNombrePropulseurs;
 
+	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);
 	
 protected slots:
 	void thrusterChanged(int index);

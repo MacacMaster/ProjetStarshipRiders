@@ -1,6 +1,8 @@
 #include "ProjetII.h"
 
-
+/*
+TODO : WHEN pressing and clicking chckbx
+*/
 
 /*
 * http://doc.qt.io/qt-5/qgroupbox.html#details
@@ -26,7 +28,6 @@ ProjetII::ProjetII(QWidget *parent)
 	mSceneControl = new QSceneViewController();
 	mSceneControl->setSceneModel(&mSceneModel);
 
-
 	//setCentralWidget(mSceneControl);
 	setCentralWidget(mainWidget);
 	mainWidget->setLayout(mainLayout);
@@ -39,7 +40,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Onglet Navette predeterminee
-	ongletNav = new OngletNav;
+	ongletNav = new OngletNav(mSceneControl);
 
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
@@ -182,6 +183,7 @@ void ProjetII::generate_Horizon_6t_k()
 	// ...
 	// ...
 	// ...  
+
 	mSceneControl->update();
 }
 
@@ -217,7 +219,6 @@ void ProjetII::addNewThruster(QSceneModel * model,
 
 
 void ProjetII::tic() {
-
 	mSceneModel.tic(0.03);
 	mSceneControl->update();
 }
@@ -226,7 +227,7 @@ void ProjetII::updateShuttleFromGUI(){
 	mOngletVeh->shuttleChange(mShuttle);
 }
 void ProjetII::updateThrustersFromGUI() {
-	//mOngletPropulseurs->shuttleChange(mShuttle);
+	mOngletPropulseurs->shuttleChange(mShuttle);
 }
 
 

@@ -87,6 +87,12 @@
     <ClCompile Include="OngletSimulation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QShuttleDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QShuttlePostgresqlDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ProjetII.h">
@@ -124,5 +130,14 @@
     <ClInclude Include="OngletSimulation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="QShuttleDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QShuttlePostgresqlDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Fiche_Autoevaluation_Comparative.xlsx" />
   </ItemGroup>
 </Project>

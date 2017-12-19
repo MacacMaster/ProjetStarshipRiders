@@ -77,7 +77,7 @@ bool QShuttlePostgresqlDatabase::isShuttleExists(QString const & name)
 
 bool QShuttlePostgresqlDatabase::retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel)
 {
-	// to do
+	// to do PRIORITY
 	return false;
 }
 
