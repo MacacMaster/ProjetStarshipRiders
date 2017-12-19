@@ -61,6 +61,7 @@ ProjetII::ProjetII(QWidget *parent)
 	connect(mOngletVeh, &OngletVehicule::polygonChanged, this, &ProjetII::updateShuttleFromGUI);
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
 	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
+	connect(mOngletPropulseurs, &OngletPropulseurs::polygonChanged, this, &ProjetII::updateThrustersFromGUI);
 
 	//Create TabView
 	mTabWidget->addTab(ongletNav, tr("Navette"));
@@ -223,7 +224,9 @@ void ProjetII::tic() {
 
 void ProjetII::updateShuttleFromGUI(){
 	mOngletVeh->shuttleChange(mShuttle);
-
+}
+void ProjetII::updateThrustersFromGUI() {
+	//mOngletPropulseurs->shuttleChange(mShuttle);
 }
 
 

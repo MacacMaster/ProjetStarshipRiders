@@ -12,7 +12,7 @@
 #include <QtWidgets/QGroupBox>
 #include "QRealValueBox.h"
 #include "QIntValueBox.h"
-#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QKeySequenceEdit>
 #include <QtWidgets/QCombobox>
 
 class OngletPropulseurs : public QWidget
@@ -22,6 +22,10 @@ class OngletPropulseurs : public QWidget
 public:
 	OngletPropulseurs(QShuttle * shuttle, QWidget *parent = nullptr);
 	
+
+
+	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);
+
 	~OngletPropulseurs();
 
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
@@ -30,7 +34,7 @@ public:
 	//Reads shuttle info and shows in GUI
 
 private:
-	QShuttle * shuttle;
+	QShuttle * mShuttle;
 	QVBoxLayout *mMainLayout;
 	QGroupBox *mPropulsion;
 	QGroupBox *mPropulseur;
@@ -39,7 +43,7 @@ private:
 	QLabel *mSelectPropulseurLabel;
 	QComboBox *mSelectPropulseurValue;
 	QLabel *mToucheControleLabel;
-	QLineEdit *mToucheControleValue;
+	QKeySequenceEdit *mToucheControleValue;
 	QRealValueBox *mDimension;
 	QRealValueBox *mMasseSurfacique;
 	QRealValueBox *mDebitCarb;
@@ -49,7 +53,6 @@ private:
 	QRealValueBox *mOrientation;
 	QIntValueBox *mNombrePropulseurs;
 
-	void createReal(QRealValueBox * qReal, QString title, QString unit);
 	
 protected slots:
 	void thrusterChanged(int index);

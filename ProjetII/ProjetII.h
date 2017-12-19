@@ -77,6 +77,7 @@ private slots:
 
 protected slots:
 	void updateShuttleFromGUI();
+	void updateThrustersFromGUI();
 	void createNav();
 };
 

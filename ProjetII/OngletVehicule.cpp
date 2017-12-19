@@ -64,6 +64,7 @@ void OngletVehicule::shuttleChange(QShuttle * shuttle)
 void OngletVehicule::shuttleInitialize(QShuttle * shuttle)
 {
 	mPolygonEditor->setPolygon(static_cast<QPolygonalBody*>(shuttle->shape())->polygon());
+	//mPolygonEditor->setOutputScale(shuttle->shape()->);
 	mLineNom->setText(shuttle->name());
 	mMasseSurfacique->setValue(shuttle->surfaceMass());
 	mPolygonEditor->setBrush(shuttle->shape()->brush());	//sychronize colorBox color with shuttle color
