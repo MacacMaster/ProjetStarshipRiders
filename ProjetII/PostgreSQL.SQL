@@ -56,4 +56,7 @@ ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_SHUTTLE_FK 	FOREIGN KEY (Shuttle) 
 ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_SHAPE_FK 	FOREIGN KEY (Shape) 	REFERENCES Shape;
 ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_FUELTANK_FK FOREIGN KEY (FuelTank)	REFERENCES FuelTank;
 
+/*
+SELECT name,surfacemass,linearposition,linearspeed,angularposition,angularspeed,brushcolor,pencolor,penwidth,polygonalshape FROM shuttle LEFT OUTER JOIN shape ON (shuttle.shape = shape.id);
+*/
 

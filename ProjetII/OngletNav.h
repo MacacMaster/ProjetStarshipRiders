@@ -21,8 +21,9 @@ public:
 	OngletNav(QSceneViewController * view, QWidget *parent = nullptr);
 	~OngletNav();
 
-	void updateStatus(QString status);
+	void setNavList(QStringList list);
 
+	void updateStatus(QString status);
 	QRealValueBox* navBoxTaille() { return mNavBoxTaille; }
 
 private:
@@ -32,17 +33,28 @@ private:
 	QComboBox *mComboBox;
 	QRealValueBox *mNavBoxTaille;
 	QPushButton *navBtnCreer;
-	QStringList navettesList{ "Horizon 6TK", "Navette2" };
+	QStringList navettesList;
 
 	QGroupBox *mSimulationOptions;
 	QCheckBox *mSimulCenter;
 
 	QGroupBox *mStatusGB;
 	QLabel *mStatus;
+
+	QGroupBox * mDatabaseGB;
+	QGroupBox * mShuttleOptions;
+	QPushButton* mLoadShuttle;
+	QPushButton* mSaveShuttle;
+	QPushButton* mNewShuttle;
+	QPushButton* mDeleteShuttle;
 protected slots:
 	void simulCenter(int state);
 
 signals:
 	void navCreated();
+	void newShuttleSignal ();
+	void loadShuttleSignal();
+	void saveShuttleSignal();
+	void deleteShuttleSignal();
 };
 #endif // ONGLET_NAV

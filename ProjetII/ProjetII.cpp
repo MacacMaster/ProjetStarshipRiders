@@ -44,7 +44,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Onglet Navette predeterminee
-	mOngletNav = new OngletNav(mSceneControl);
+	mOngletNav = new OngletNav(mSceneControl,this);
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
 	//Onglet pour Reservoir
@@ -67,16 +67,21 @@ ProjetII::ProjetII(QWidget *parent)
 	connect(mOngletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
 	connect(mOngletPropulseurs, &OngletPropulseurs::polygonChanged, this, &ProjetII::updateThrustersFromGUI);
 
+	//Connections SQL
+	connect(mOngletNav, &OngletNav::newShuttleSignal,	this, &ProjetII::dbNewShuttle);
+	connect(mOngletNav, &OngletNav::loadShuttleSignal,	this, &ProjetII::dbLoadShuttle);
+	connect(mOngletNav, &OngletNav::saveShuttleSignal,	this, &ProjetII::dbSaveShuttle);
+	connect(mOngletNav, &OngletNav::deleteShuttleSignal,this, &ProjetII::dbDeleteShuttle);
+
 	//Create TabView
 	mTabWidget->addTab(mOngletNav, tr("Navette"));
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
 	mTabWidget->addTab(mOngletRes, tr("Reservoir"));
 	mTabWidget->addTab(mOngletPropulseurs, tr("Propulseurs"));
-	mTabWidget->addTab(new QLabel, tr("Simulation"));
-	mTabWidget->addTab(new QLabel, tr("Potato"));
-	mTabWidget->addTab(new QLabel, tr("Patate"));
+	mTabWidget->addTab(new QLabel, tr("Proto"));
 
-	mOngletNav->updateStatus(dbstatus);
+	mOngletNav->setNavList(mDB->availableShuttles());
+	mOngletNav->updateStatus(mDBStatus);
 }
 
 void ProjetII::generate_Horizon_6t_k()
@@ -244,10 +249,29 @@ void ProjetII::createNav() {
 }
 
 void ProjetII::dbConnect() {
-	if (db.connect("localhost", 5432, "postgres", "AAAaaa111", "postgres")) {
-		dbstatus = "Connection successful";
+	mDB = new QShuttlePostgresqlDatabase;
+	if (mDB->connect("localhost", 5432, "postgres", "AAAaaa111", "postgres")) {
+		mDBStatus = "Connection to database successful";
 	}
 	else {
-		dbstatus = "Connection to database has failed";
+		mDBStatus = "Connection to database has failed";
 	}
+}
+
+void ProjetII::dbSaveShuttle() {
+	mOngletNav->updateStatus("Shuttle saved");
+}
+void ProjetII::dbLoadShuttle() {
+	mOngletNav->updateStatus("Shuttle loaded");
+}
+void ProjetII::dbNewShuttle() {
+	if (mDB->insertShuttle(mShuttle)) {
+		mOngletNav->updateStatus("Shuttle Created");
+		mOngletNav->setNavList(mDB->availableShuttles());
+	}
+	else
+		mOngletNav->updateStatus("Shuttle already exists");
+}
+void ProjetII::dbDeleteShuttle() {
+	mOngletNav->updateStatus("Shuttle deleted");
 }

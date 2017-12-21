@@ -80,10 +80,39 @@ bool QShuttlePostgresqlDatabase::isShuttleExists(QString const & name)
 bool QShuttlePostgresqlDatabase::retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel)
 {
 	// to do PRIORITY
-	QSqlQuery query;
-	query.prepare("SELECT * FROM shuttle WHERE name = ?;");
-	query.bindValue(0, name);
-	return false;
+	if (!isShuttleExists(name)) {//Verifies if shuttle exists
+		return false;
+	}
+	
+
+	mSelectShuttleQuery.bindValue(0, name);
+	if (!mSelectShuttleQuery.exec()) {
+		return false;
+	}
+	//set shuttleid
+	int shuttleId = mSelectShuttleQuery.value(0).toInt();
+	
+	//set Shuttleshape query with this
+	mSelectShuttleQuery.value(1).toInt();//shuttleid
+
+	mSelectShuttleQuery.value(2).toReal();//surfacemass
+	QUtilities::pointFromString(mSelectShuttleQuery.value(3).toString());//linearposition
+	QUtilities::pointFromString(mSelectShuttleQuery.value(4).toString());//linearspeed
+	mSelectShuttleQuery.value(5).toReal();//angularposition
+	mSelectShuttleQuery.value(6).toReal();//angularspeed
+	//brushcolor
+	//pencolor
+	//penwidth
+	//polygonalshape
+
+	//traitement des data
+
+	mSelectShapeQuery.bindValue(0,"");
+	mSelectFuelTankQuery.bindValue(0,shuttleId);
+	mSelectThrusterQuery.bindValue(0,"");
+
+
+	return true;
 }
 
 bool QShuttlePostgresqlDatabase::insertShuttle(QShuttle * shuttle)
@@ -152,7 +181,7 @@ bool QShuttlePostgresqlDatabase::insertShuttle(QShuttle * shuttle)
 	}
 
 	mDatabase.commit();
-	return false;
+	return true;
 }
 
 bool QShuttlePostgresqlDatabase::updateShuttle(QShuttle * shuttle, QString const & name)
@@ -173,6 +202,11 @@ void QShuttlePostgresqlDatabase::initializePreparedQueries()
 	mInsertShapeQuery.prepare(mDatabase, "Shape", "BrushColor", "PenColor", "PenWidth", "PolygonalShape");
 	mInsertFuelTankQuery.prepare(mDatabase, "FuelTank", "Shuttle", "Capacity", "FuelLevel", "TankWidth", "TankHeight", "LinearPosition", "AngularPosition", "FuelColor");
 	mInsertThrusterQuery.prepare(mDatabase, "Thruster", "Shuttle", "Shape", "FuelTank", "MassFlowRate", "MassEjectedSpeed", "LinearPosition", "AngularPosition", "KeySequence");
+	mSelectShuttleQuery.prepare("SELECT shuttle.id,surfacemass, linearposition, linearspeed, angularposition, angularspeed, brushcolor, pencolor, penwidth, polygonalshape FROM shuttle LEFT OUTER JOIN shape ON(shuttle.shape = shape.id) WHERE name LIKE '?'");
+	mSelectShapeQuery.prepare("SELECT BrushColor,PenColor, PenWidth, PolygonalShape FROM shape WHERE id LIKE '?'");
+	mSelectFuelTankQuery.prepare(	"SELECT Capacity,FuelLevel,TankWidth,TankHeight,LinearPosition,AngularPosition,FuelColor FROM fueltank WHERE shuttle LIKE '?'");
+	mSelectThrusterQuery.prepare(	"SELECT Shape,FuelTank,MassFlowRate,MassEjectedSpeed,LinearPosition,AngularPosition,KeySequence FROM thruster WHERE shuttle LIKE '?'");
+
 }
 
 bool QShuttlePostgresqlDatabase::insertShape(QPolygonalBody * shape, int & newShapeId)

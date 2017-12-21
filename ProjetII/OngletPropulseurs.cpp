@@ -46,9 +46,6 @@ OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, QWidget *parent)
 	mPropulseur->layout()->addWidget(line);
 
 	//RealValueBoxes
-	mThrust=new QRealValueBox;
-	createReal(mThrust, "Thrust : ", " - ",0.001,1000.000);
-
 	mMasseSurfacique=new QRealValueBox;
 	createReal(mMasseSurfacique, "Masse Surfacique : ", "kg / m²", 0.001, 1000.000);
 
@@ -98,7 +95,7 @@ OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, QWidget *parent)
 	shuttleInitialize(shuttle);
 
 	connect(mSelectPropulseurValue, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &OngletPropulseurs::thrusterChanged);
-	//connect(mToucheControleValue, &QKeySequenceEdit::editingFinished, this, &OngletPropulseurs::polygonChanged);
+	connect(mToucheControleValue, &QKeySequenceEdit::editingFinished, this, &OngletPropulseurs::polygonChanged);
 	connect(mPolygonEditor, &QPolygonEditor::polygonUpdated, this, &OngletPropulseurs::polygonChanged);
 
 }
@@ -130,14 +127,10 @@ void OngletPropulseurs::shuttleChange(QShuttle * shuttle)
 	temp->setAngularPosition(Trigo<>::deg2rad(mOrientation->value()));
 	static_cast<QPolygonalBody*>(temp->shape())->setPolygon(mPolygonEditor->polygon());
 	temp->setSurfaceMass(mMasseSurfacique->value());
-	//temp->setController(new QThrusterKeyboardController(mToucheControleValue->keySequence()));
-	
-
+	temp->setThrusterEfficiency(mDebitCarb->value(), mEjectionCarb->value());
 	//
-	//temp->setThrusterEfficiency();
-	temp->setThrustLevel(mThrust->value());
-	//mDebitCarb->setValueQuiet(temp->massFlowRate());
-	//mEjectionCarb->setValueQuiet(temp->massEjectedSpeed());
+	temp->setController(new QThrusterKeyboardController(mToucheControleValue->keySequence()));
+
 }
 
 //Sets Shuttle Info to GUI
@@ -162,9 +155,6 @@ void OngletPropulseurs::thrusterChanged(int index) {
 	mPolygonEditor->setBrush(temp->shape()->brush());	//sychronize colorBox color with shuttle color
 	mPolygonEditor->setPen(temp->shape()->pen());
 	
-	
-	//???
-	mThrust->setValueQuiet(temp->thrustLevel());
 
 	mMasseSurfacique->setValueQuiet(temp->surfaceMass());
 	mToucheControleValue->setKeySequence(static_cast<QThrusterKeyboardController*>(temp->controller())->linkedKey());

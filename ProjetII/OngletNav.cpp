@@ -4,6 +4,8 @@
 OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
 	: QWidget(parent)
 {
+	
+	//navettesList.push_back(static_cast<ProjetII*>(parent)->shuttle()->name());
 	mView = view;
 	mView->targetShuttle();
 	//Ensemble pour la taille
@@ -43,18 +45,35 @@ OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
 	mStatus = new QLabel;
 	mStatusGB->layout()->addWidget(mStatus);
 	
+	//DB Options
+	mDatabaseGB = new QGroupBox("PostgreSQL");
+	mDatabaseGB->setLayout(new QVBoxLayout);
+	mShuttleOptions = new QGroupBox("Shuttle Options");
+	mShuttleOptions->setLayout(new QHBoxLayout);
+	mLoadShuttle = new QPushButton("Load");
+	mSaveShuttle = new QPushButton("Save");
+	mNewShuttle = new QPushButton("New");
+	mDeleteShuttle = new QPushButton("Delete");
+	mShuttleOptions->layout()->addWidget(mLoadShuttle);
+	mShuttleOptions->layout()->addWidget(mSaveShuttle);
+	mShuttleOptions->layout()->addWidget(mNewShuttle);
+	mShuttleOptions->layout()->addWidget(mDeleteShuttle);
+	mDatabaseGB->layout()->addWidget(mShuttleOptions);
+
 
 	//Widget de l'onglet (principal)
 	navWidgetLayout = new QVBoxLayout;
 	navWidgetLayout->addWidget(mStatusGB);
 	navWidgetLayout->addWidget(navSelectionGB);
 	navWidgetLayout->addWidget(mSimulationOptions);
+	navWidgetLayout->addWidget(mDatabaseGB);
 	navWidgetLayout->addStretch();
 	
 	
 	//setMaximumHeight(350);
 	setLayout(navWidgetLayout);
 
+	//Connections
 	connect(mSimulCenter, static_cast<void(QCheckBox::*)(int)>(&QCheckBox::stateChanged), this, &OngletNav::simulCenter);
 	/*
 Qt::Unchecked	0	The item is unchecked.
@@ -62,6 +81,10 @@ Qt::PartiallyChecked	1	The item is partially checked. Items in hierarchical mode
 Qt::Checked	2	The item is checked.
 */
 	connect(navBtnCreer, &QPushButton::clicked, this, &OngletNav::navCreated);
+	connect(mNewShuttle, &QPushButton::clicked, this,	&OngletNav::newShuttleSignal);
+	connect(mLoadShuttle, &QPushButton::clicked, this,	&OngletNav::loadShuttleSignal);
+	connect(mSaveShuttle, &QPushButton::clicked, this,	&OngletNav::saveShuttleSignal);
+	connect(mDeleteShuttle, &QPushButton::clicked, this,&OngletNav::deleteShuttleSignal);
 }
 
 OngletNav::~OngletNav()
@@ -79,7 +102,11 @@ void OngletNav::simulCenter(int state)
 	}
 	mSimulCenter->blockSignals(false);
 }
+void OngletNav::setNavList(QStringList list) {
+	mComboBox->addItems(list);
+}
 
 void OngletNav::updateStatus(QString status) {
 	mStatus->setText(status);
 }
+

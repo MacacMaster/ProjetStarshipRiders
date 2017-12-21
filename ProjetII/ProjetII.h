@@ -34,7 +34,6 @@ class ProjetII
 
 public:
 	ProjetII(QWidget *parent = Q_NULLPTR);
-	void createTab();
 	void generate_Horizon_6t_k();
 	void addNewThruster(QSceneModel * model,
 		QShuttleFuelTank * fuelTank,
@@ -47,8 +46,9 @@ public:
 		QPen const & pen,
 		QKeySequence const & key);
 
+	//Getters
 	QShuttle *shuttle() { return mShuttle; }
-	
+	QShuttlePostgresqlDatabase * db() { return mDB; }
 	//void paint();
 
 
@@ -73,8 +73,8 @@ private:
 	QColorBox *colorBox;
 	QTimer mTimer;
 
-	QShuttlePostgresqlDatabase db;
-	QString dbstatus;
+	QShuttlePostgresqlDatabase * mDB;
+	QString mDBStatus;
 
 private slots:
 	void tic();
@@ -84,6 +84,10 @@ protected slots:
 	void updateThrustersFromGUI();
 	void createNav();
 	void dbConnect();
+	void dbSaveShuttle();
+	void dbLoadShuttle();
+	void dbNewShuttle();
+	void dbDeleteShuttle();
 };
 
 #endif //PROJETII_H

@@ -27,6 +27,10 @@ protected:
 	bool insertShape(QPolygonalBody * shape, int & newShapeId);
 	
 private:	
+	QSqlQuery mSelectShuttleQuery;
+	QSqlQuery mSelectShapeQuery;
+	QSqlQuery mSelectFuelTankQuery;
+	QSqlQuery mSelectThrusterQuery;
 	QSqlQueryInsertion mInsertShuttleQuery;
 	QSqlQueryInsertion mInsertShapeQuery;
 	QSqlQueryInsertion mInsertFuelTankQuery;
