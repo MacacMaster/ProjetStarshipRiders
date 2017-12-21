@@ -110,3 +110,5 @@ void OngletNav::updateStatus(QString status) {
 	mStatus->setText(status);
 }
 
+QString OngletNav::selectedName() { return mComboBox->currentText(); }
+

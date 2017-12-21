@@ -262,7 +262,10 @@ void ProjetII::dbSaveShuttle() {
 	mOngletNav->updateStatus("Shuttle saved");
 }
 void ProjetII::dbLoadShuttle() {
-	mOngletNav->updateStatus("Shuttle loaded");
+	if (mDB->retrieveShuttle(mShuttle, mOngletNav->selectedName(), mSceneModel)) {
+		//mOngletVeh->shuttleInitialize(mShuttle);
+		mOngletNav->updateStatus("Shuttle loaded");
+	}
 }
 void ProjetII::dbNewShuttle() {
 	if (mDB->insertShuttle(mShuttle)) {

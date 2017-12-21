@@ -77,41 +77,148 @@ bool QShuttlePostgresqlDatabase::isShuttleExists(QString const & name)
 	return query.value(0).toInt() == 1;
 }
 
-bool QShuttlePostgresqlDatabase::retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel)
+bool QShuttlePostgresqlDatabase::retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel & sceneModel)
 {
+	mDatabase.transaction();
 	// to do PRIORITY
 	if (!isShuttleExists(name)) {//Verifies if shuttle exists
+		mDatabase.rollback();
 		return false;
 	}
-	
+	//QUERY
+	QSqlQuery mSelectShuttleQuery(mDatabase);
+	QSqlQuery mSelectFuelTankQuery(mDatabase);
+	QSqlQuery mSelectThrusterQuery(mDatabase);
+	mSelectShuttleQuery.prepare("SELECT shuttle.id,surfacemass, linearposition, linearspeed, angularposition, angularspeed, brushcolor, pencolor, penwidth, polygonalshape FROM shuttle LEFT OUTER JOIN shape ON(shuttle.shape = shape.id) WHERE name LIKE ?");
+	mSelectFuelTankQuery.prepare("SELECT capacity,fuellevel,tankwidth,tankheight,linearposition,angularposition,fuelcolor FROM fueltank WHERE shuttle = ?");
+	mSelectThrusterQuery.prepare("SELECT massflowrate, massejectedspeed, linearposition, angularposition, brushcolor, pencolor, penwidth, polygonalshape,keysequence FROM thruster LEFT OUTER JOIN shape ON(thruster.shape = shape.id) WHERE shuttle = ?");
+
 
 	mSelectShuttleQuery.bindValue(0, name);
 	if (!mSelectShuttleQuery.exec()) {
 		return false;
+		mDatabase.rollback();
+		qDebug() << "Shuttle Query failed";
 	}
-	//set shuttleid
-	int shuttleId = mSelectShuttleQuery.value(0).toInt();
-	
 	//set Shuttleshape query with this
-	mSelectShuttleQuery.value(1).toInt();//shuttleid
+	mSelectShuttleQuery.next();
+	int shuttleId = mSelectShuttleQuery.value(0).toInt();//shuttleid
 
-	mSelectShuttleQuery.value(2).toReal();//surfacemass
-	QUtilities::pointFromString(mSelectShuttleQuery.value(3).toString());//linearposition
-	QUtilities::pointFromString(mSelectShuttleQuery.value(4).toString());//linearspeed
-	mSelectShuttleQuery.value(5).toReal();//angularposition
-	mSelectShuttleQuery.value(6).toReal();//angularspeed
-	//brushcolor
-	//pencolor
-	//penwidth
-	//polygonalshape
+
+	qDebug() <<name;
+	qDebug() <<mSelectShuttleQuery.value(0).toString();
+	qDebug() <<mSelectShuttleQuery.value(1).toString();
+	qDebug() <<mSelectShuttleQuery.value(2).toString();
+	qDebug() <<mSelectShuttleQuery.value(3).toString();
+	qDebug() <<mSelectShuttleQuery.value(4).toString();
+	qDebug() <<mSelectShuttleQuery.value(5).toString();
+	qDebug() <<mSelectShuttleQuery.value(6).toString();
+	qDebug() <<mSelectShuttleQuery.value(7).toString();
+	qDebug() <<mSelectShuttleQuery.value(8).toString();
+	qDebug() <<mSelectShuttleQuery.value(9).toString();
+
+	shuttle->setName(name);
+	shuttle->setSurfaceMass(mSelectShuttleQuery.value(1).toReal());//surfacemass
+	shuttle->setLinearPosition(QUtilities::pointFromString(mSelectShuttleQuery.value(2).toString()));//linearposition
+	shuttle->setLinearSpeed(QUtilities::pointFromString(mSelectShuttleQuery.value(3).toString()));//linearspeed
+	shuttle->setAngularPosition(mSelectShuttleQuery.value(4).toReal());//angularposition
+	shuttle->setAngularSpeed(mSelectShuttleQuery.value(5).toReal());//angularspeed
+	shuttle->shape()->setBrush(QUtilities::colorFromInt(mSelectShuttleQuery.value(6).toInt()));//brushcolor
+	shuttle->shape()->setPen(QPen(QUtilities::colorFromInt(mSelectShuttleQuery.value(7).toInt()), mSelectShuttleQuery.value(8).toReal()));//pencolor,penwidth
+	static_cast<QPolygonalBody*>(shuttle->shape())->setPolygon(QUtilities::polygonFromString(mSelectShuttleQuery.value(9).toString()));//polygonalshape
 
 	//traitement des data
+	mSelectFuelTankQuery.bindValue(0, shuttleId);
+	if (!mSelectFuelTankQuery.exec()) {
+		mDatabase.rollback();
+		return false;
+	}
+	//remove all FTs
+	for (QShuttleFuelTank *f : shuttle->fuelTanks()) {
+		shuttle->removeFuelTank(f);
+	}
+	//add new FTs
+	for (int i = 0; i < mSelectFuelTankQuery.size(); i++) {
+		mSelectFuelTankQuery.next();
+		
+		qDebug() << (mSelectFuelTankQuery.value(0).toReal());//capacity
+		qDebug() << mSelectFuelTankQuery.value(1).toReal();//fuellevel
+		qDebug() << mSelectFuelTankQuery.value(2).toReal();//tankwidth
+		qDebug() << mSelectFuelTankQuery.value(3).toReal();//tankheight
+		qDebug() << QUtilities::pointFromString(mSelectFuelTankQuery.value(4).toString());//linearposition
+		qDebug() << mSelectFuelTankQuery.value(5).toReal();//angularposition
+		qDebug() << (QUtilities::colorFromInt(mSelectFuelTankQuery.value(6).toInt()));//fuelcolor
+		
+		QShuttleFuelTank * temp = new QShuttleFuelTank(
+			mSelectFuelTankQuery.value(2).toReal(),
+			mSelectFuelTankQuery.value(3).toReal(),
+			QUtilities::colorFromInt(mSelectFuelTankQuery.value(6).toInt()));
+		temp->setCapacity(mSelectFuelTankQuery.value(0).toReal());
+		temp->fill(mSelectFuelTankQuery.value(1).toReal());
+		shuttle->addFuelTank(
+			temp,
+			QUtilities::pointFromString(mSelectFuelTankQuery.value(4).toString()), 
+			mSelectFuelTankQuery.value(5).toReal()
+		);		
+	}
 
-	mSelectShapeQuery.bindValue(0,"");
-	mSelectFuelTankQuery.bindValue(0,shuttleId);
-	mSelectThrusterQuery.bindValue(0,"");
+	//Thrusters
+	mSelectThrusterQuery.bindValue(0, shuttleId);
+	if (!mSelectThrusterQuery.exec()) {
+		mDatabase.rollback();
+		return false;
+	}
+	//remove all Ts
+	for (QShuttleThruster *t : shuttle->thrusters()) {
+		shuttle->removeThruster(t);
+	}
+	QShuttleFuelTank * fuelTank = shuttle->fuelTanks()[0];
+
+	for (int i = 0; i < mSelectThrusterQuery.size(); i++) {
+		//if multiple fuel tanks, 1 per thruster
+		if (shuttle->fuelTanks().size() >= mSelectThrusterQuery.size()) {
+			fuelTank = shuttle->fuelTanks()[i];
+		}
+		mSelectThrusterQuery.next();
+		/*
+		mSelectThrusterQuery.value(0).toReal();//massflowrate
+		mSelectThrusterQuery.value(1).toReal();//massejectedspeed
+		QUtilities::pointFromString(mSelectThrusterQuery.value(2).toString());//linearposition
+		mSelectThrusterQuery.value(3).toReal();//angularposition
+		QUtilities::colorFromInt(mSelectThrusterQuery.value(4).toInt());//brushcolor
+		QUtilities::colorFromInt(mSelectThrusterQuery.value(5).toInt());//pencolor
+		mSelectThrusterQuery.value(6).toReal();//penwidth
+		QUtilities::polygonFromString(mSelectThrusterQuery.value(7).toString());//polygonalshape
+		QUtilities::keySequenceFromString(mSelectThrusterQuery.value(8).toString());//keysequence
+		*/
+
+		
+		QShuttleThruster * thruster = new QShuttleThruster(new QPolygonalBody);
+		// Step 2 - Assign the polygonal shape - in this case, we use an equilateral polygon
+		static_cast<QPolygonalBody*>(thruster->shape())->setPolygon(QUtilities::polygonFromString(mSelectThrusterQuery.value(7).toString()));
+		// Step 3 - Assign brush and pen to the shape
+		thruster->shape()->setBrush(QUtilities::colorFromInt(mSelectThrusterQuery.value(4).toInt()));
+		thruster->shape()->setPen(QPen(QUtilities::colorFromInt(mSelectThrusterQuery.value(5).toInt()), mSelectThrusterQuery.value(6).toReal()));
+		// Step 4 - Assign model to the thruster
+		thruster->setSceneModel(&sceneModel);
+		// Step 5 - Assign the fuel tank
+		thruster->linkToFuelTank(fuelTank);
+		// Step 6 - Set flow rate and eject speed
+		thruster->setThrusterEfficiency(mSelectThrusterQuery.value(0).toReal(), mSelectThrusterQuery.value(1).toReal());
+		// Step 7 - Create and assign the keyboard controller
+		thruster->setController(new QThrusterKeyboardController(QUtilities::keySequenceFromString(mSelectThrusterQuery.value(8).toString())));
+		// Step 8 - Assign the thruster to the shuttle
+		shuttle->addThruster(
+			thruster, 
+			QUtilities::pointFromString(mSelectThrusterQuery.value(2).toString()), 
+			mSelectThrusterQuery.value(3).toReal()
+		);//Trigo<>::deg2rad(orientationDegrees));
 
 
+
+
+	}
+	mDatabase.commit();
 	return true;
 }
 
@@ -193,6 +300,11 @@ bool QShuttlePostgresqlDatabase::updateShuttle(QShuttle * shuttle, QString const
 bool QShuttlePostgresqlDatabase::deleteShuttle(QString const & name)
 {
 	// to do
+	//DELETE FROM thruster	WHERE shuttle = 1;
+	//DELETE FROM fueltank	WHERE shuttle = 1;
+	//DELETE FROM shape		WHERE shuttle = 1;//need to find the id of the shuttle
+	//DELETE FROM shuttle		WHERE id = 1;
+
 	return false;
 }
 
@@ -202,11 +314,6 @@ void QShuttlePostgresqlDatabase::initializePreparedQueries()
 	mInsertShapeQuery.prepare(mDatabase, "Shape", "BrushColor", "PenColor", "PenWidth", "PolygonalShape");
 	mInsertFuelTankQuery.prepare(mDatabase, "FuelTank", "Shuttle", "Capacity", "FuelLevel", "TankWidth", "TankHeight", "LinearPosition", "AngularPosition", "FuelColor");
 	mInsertThrusterQuery.prepare(mDatabase, "Thruster", "Shuttle", "Shape", "FuelTank", "MassFlowRate", "MassEjectedSpeed", "LinearPosition", "AngularPosition", "KeySequence");
-	mSelectShuttleQuery.prepare("SELECT shuttle.id,surfacemass, linearposition, linearspeed, angularposition, angularspeed, brushcolor, pencolor, penwidth, polygonalshape FROM shuttle LEFT OUTER JOIN shape ON(shuttle.shape = shape.id) WHERE name LIKE '?'");
-	mSelectShapeQuery.prepare("SELECT BrushColor,PenColor, PenWidth, PolygonalShape FROM shape WHERE id LIKE '?'");
-	mSelectFuelTankQuery.prepare(	"SELECT Capacity,FuelLevel,TankWidth,TankHeight,LinearPosition,AngularPosition,FuelColor FROM fueltank WHERE shuttle LIKE '?'");
-	mSelectThrusterQuery.prepare(	"SELECT Shape,FuelTank,MassFlowRate,MassEjectedSpeed,LinearPosition,AngularPosition,KeySequence FROM thruster WHERE shuttle LIKE '?'");
-
 }
 
 bool QShuttlePostgresqlDatabase::insertShape(QPolygonalBody * shape, int & newShapeId)

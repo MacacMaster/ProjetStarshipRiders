@@ -59,5 +59,10 @@ ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_FUELTANK_FK FOREIGN KEY (FuelTank)
 /*
 SELECT shuttle.id,surfacemass,linearposition,linearspeed,angularposition,angularspeed,brushcolor,pencolor,penwidth,polygonalshape FROM shuttle LEFT OUTER JOIN shape ON (shuttle.shape = shape.id) WHERE name LIKE 'lalala';
 
+
+SELECT fueltank,massflowrate,massejectedspeed,linearposition,angularposition,brushcolor,pencolor,penwidth,polygonalshape 
+FROM thruster 
+LEFT OUTER JOIN shape ON (thruster.shape = shape.id)
+WHERE shuttle = 1
 */
 

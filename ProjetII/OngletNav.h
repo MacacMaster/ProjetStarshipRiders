@@ -24,6 +24,7 @@ public:
 	void setNavList(QStringList list);
 
 	void updateStatus(QString status);
+	QString selectedName();
 	QRealValueBox* navBoxTaille() { return mNavBoxTaille; }
 
 private:

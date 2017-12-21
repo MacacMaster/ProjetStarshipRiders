@@ -68,7 +68,7 @@ public:
 	virtual QStringList availableShuttles() const = 0;
 	virtual bool isShuttleExists(QString const & name) = 0;
 
-	virtual bool retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel) = 0;
+	virtual bool retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel & sceneModel) = 0;
 	virtual bool insertShuttle(QShuttle * shuttle) = 0;
 	virtual bool updateShuttle(QShuttle * shuttle, QString const & name) = 0;
 	virtual bool deleteShuttle(QString const & name) = 0;

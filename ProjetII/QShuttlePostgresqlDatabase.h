@@ -25,7 +25,7 @@ public:
 	virtual QStringList availableShuttles() const override;
 	virtual bool isShuttleExists(QString const & name) override;
 
-	virtual bool retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel) override;
+	virtual bool retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel & sceneModel) override;
 	virtual bool insertShuttle(QShuttle * shuttle) override;
 	virtual bool updateShuttle(QShuttle * shuttle, QString const & name) override;
 	virtual bool deleteShuttle(QString const & name) override;
@@ -34,10 +34,7 @@ protected:
 	bool insertShape(QPolygonalBody * shape, int & newShapeId);
 	
 private:	
-	QSqlQuery mSelectShuttleQuery;
-	QSqlQuery mSelectShapeQuery;
-	QSqlQuery mSelectFuelTankQuery;
-	QSqlQuery mSelectThrusterQuery;
+
 	QSqlQueryInsertion mInsertShuttleQuery;
 	QSqlQueryInsertion mInsertShapeQuery;
 	QSqlQueryInsertion mInsertFuelTankQuery;
