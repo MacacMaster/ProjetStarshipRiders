@@ -9,6 +9,7 @@ TODO : WHEN pressing and clicking chckbx
 * http://doc.qt.io/qt-5/qtabwidget.html#details
 */
 
+QString dbstatus = "";
 
 ProjetII::ProjetII(QWidget *parent)
 	: QMainWindow(parent),
@@ -17,6 +18,9 @@ ProjetII::ProjetII(QWidget *parent)
 	mShuttleEditor(new QPolygonEditor())
 {
 	ui.setupUi(this);
+	//connects to db
+	dbConnect();
+
 	//Empty widget for layout
 	QWidget * mainWidget = new QWidget;
 	QHBoxLayout * mainLayout = new QHBoxLayout;
@@ -40,11 +44,9 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Onglet Navette predeterminee
-	ongletNav = new OngletNav(mSceneControl);
-
+	mOngletNav = new OngletNav(mSceneControl);
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
-	
 	//Onglet pour Reservoir
 	mOngletRes = new OngletReservoir(mShuttle, mShuttleEditor->outputScale());
 
@@ -62,11 +64,11 @@ ProjetII::ProjetII(QWidget *parent)
 	//Connections
 	connect(mOngletVeh, &OngletVehicule::polygonChanged, this, &ProjetII::updateShuttleFromGUI);
 	connect(&mTimer, &QTimer::timeout, this, &ProjetII::tic);
-	connect(ongletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
+	connect(mOngletNav, &OngletNav::navCreated, this, &ProjetII::createNav);
 	connect(mOngletPropulseurs, &OngletPropulseurs::polygonChanged, this, &ProjetII::updateThrustersFromGUI);
 
 	//Create TabView
-	mTabWidget->addTab(ongletNav, tr("Navette"));
+	mTabWidget->addTab(mOngletNav, tr("Navette"));
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
 	mTabWidget->addTab(mOngletRes, tr("Reservoir"));
 	mTabWidget->addTab(mOngletPropulseurs, tr("Propulseurs"));
@@ -74,6 +76,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mTabWidget->addTab(new QLabel, tr("Potato"));
 	mTabWidget->addTab(new QLabel, tr("Patate"));
 
+	mOngletNav->updateStatus(dbstatus);
 }
 
 void ProjetII::generate_Horizon_6t_k()
@@ -234,7 +237,17 @@ void ProjetII::updateThrustersFromGUI() {
 
 void ProjetII::createNav() {
 
-	mShuttleEditor->setOutputScale(ongletNav->navBoxTaille()->value());
+	mShuttleEditor->setOutputScale(mOngletNav->navBoxTaille()->value());
+	//function for custom ship from db
 	generate_Horizon_6t_k();
 	mSceneControl->setFocus();
+}
+
+void ProjetII::dbConnect() {
+	if (db.connect("localhost", 5432, "postgres", "AAAaaa111", "postgres")) {
+		dbstatus = "Connection successful";
+	}
+	else {
+		dbstatus = "Connection to database has failed";
+	}
 }

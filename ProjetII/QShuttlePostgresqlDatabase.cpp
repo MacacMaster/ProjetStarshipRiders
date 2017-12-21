@@ -36,7 +36,9 @@ bool QShuttlePostgresqlDatabase::connect(QString const & hostName, size_t port, 
 	if (!dbOpen) {
 		qDebug() << "Database connection error : " << mDatabase.lastError().text();
 	}
-	qDebug() << "Database connection successful!";
+	else {
+		qDebug() << "Database connection successful!";
+	}
 
 	initializePreparedQueries();
 
@@ -78,6 +80,9 @@ bool QShuttlePostgresqlDatabase::isShuttleExists(QString const & name)
 bool QShuttlePostgresqlDatabase::retrieveShuttle(QShuttle * shuttle, QString const & name, QSceneModel const & sceneModel)
 {
 	// to do PRIORITY
+	QSqlQuery query;
+	query.prepare("SELECT * FROM shuttle WHERE name = ?;");
+	query.bindValue(0, name);
 	return false;
 }
 
