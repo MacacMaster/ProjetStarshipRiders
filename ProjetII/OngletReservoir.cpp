@@ -129,7 +129,7 @@ void OngletReservoir::tankInitialize(QShuttle * shuttle)
 	mHeight->setValue(static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->height()/mScale);
 	mHPosition->setValue(mShuttleFuelTank->linearPosition().rx()/mScale);
 	mVPosition->setValue(mShuttleFuelTank->linearPosition().ry()/mScale);
-	mOrientation->setValue(Trigo<>::deg2rad(mShuttleFuelTank->angularPosition()));
+	mOrientation->setValue(Trigo<>::rad2deg(mShuttleFuelTank->angularPosition()));
 
 	mColorTank->setColor(mShuttleFuelTank->shape()->brush().color());
 	mColorOutline->setColor(mShuttleFuelTank->shape()->pen().color());
@@ -143,7 +143,7 @@ void OngletReservoir::changeTank() {
 	static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->setWidth(mWidth->value()*mScale);
 	static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->setHeight(mHeight->value()*mScale);
 	mShuttleFuelTank->setLinearPosition(QPointF(mHPosition->value()*mScale, mVPosition->value()*mScale));
-	mShuttleFuelTank->setAngularPosition(Trigo<>::rad2deg(mOrientation->value()));
+	mShuttleFuelTank->setAngularPosition(Trigo<>::deg2rad(mOrientation->value()));
 
 	mShuttleFuelTank->shape()->setBrush(mColorTank->color());
 	mShuttleFuelTank->shape()->setPen(mColorOutline->color());

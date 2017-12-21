@@ -20,7 +20,7 @@ class OngletPropulseurs : public QWidget
 	Q_OBJECT
 
 public:
-	OngletPropulseurs(QShuttle * shuttle, QWidget *parent = nullptr);
+	OngletPropulseurs(QShuttle * shuttle, qreal scale, QWidget *parent = nullptr);
 	
 
 
@@ -29,6 +29,7 @@ public:
 
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
 	void shuttleInitialize(QShuttle * shuttle);
+	void addNewThruster();
 
 	//Reads shuttle info and shows in GUI
 
@@ -51,11 +52,13 @@ private:
 	QRealValueBox *mPositionV;
 	QRealValueBox *mOrientation;
 	QIntValueBox *mNombrePropulseurs;
+	qreal mScale;
 
 	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);
 	
 protected slots:
 	void thrusterChanged(int index);
+	void changeThrusterQuantity();
 
 signals:
 	void polygonChanged();
