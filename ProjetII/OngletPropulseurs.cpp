@@ -6,10 +6,12 @@
 TODO : Set Massflow
 */
 
-OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, QWidget *parent)
+OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, qreal scale, QWidget *parent)
 	: QWidget(parent)
 {
-	
+	mShuttle = shuttle;
+	mScale = scale;
+
 	//Propulsion
 	mPropulsion = new QGroupBox(tr("Propulsion"));
 	mPropulsion->setLayout(new QVBoxLayout);
@@ -97,7 +99,7 @@ OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, QWidget *parent)
 	connect(mSelectPropulseurValue, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &OngletPropulseurs::thrusterChanged);
 	connect(mToucheControleValue, &QKeySequenceEdit::editingFinished, this, &OngletPropulseurs::polygonChanged);
 	connect(mPolygonEditor, &QPolygonEditor::polygonUpdated, this, &OngletPropulseurs::polygonChanged);
-
+	connect(mNombrePropulseurs, &QIntValueBox::valueChanged, this, &OngletPropulseurs::changeThrusterQuantity);
 }
 
 //DRY
@@ -166,4 +168,46 @@ void OngletPropulseurs::thrusterChanged(int index) {
 
 	mPolygonEditor->blockSignals(false);
 	mToucheControleValue->blockSignals(false);
+}
+
+void OngletPropulseurs::addNewThruster()
+{
+	qreal massFlowRate{ 100.0 };
+	qreal massEjectSpeed{ 100.0 };
+	QShuttleFuelTank * fuelTank = mShuttle->fuelTanks()[0];
+	QPointF position(0.0,0.0);
+	qreal orientationDegrees{ 0 };
+	QBrush brush(QColor(128, 128, 128));
+	QPen pen(QPen(Qt::white, 0.5));
+	QKeySequence key{ "" };
+	//QSceneModel * model;
+
+
+	// Step 1 - Build thruster with a polygonal shape (instead of the default circular shape) 
+	QShuttleThruster * thruster = new QShuttleThruster(new QPolygonalBody);
+	// Step 2 - Assign the polygonal shape - in this case, we use an equilateral polygon
+	static_cast<QPolygonalBody*>(thruster->shape())->setPolygon(QPolygonFactory::equilateralPolygon(3, mScale, 0.0));
+	// Step 3 - Assign brush and pen to the shape
+	thruster->shape()->setBrush(brush);
+	thruster->shape()->setPen(pen);
+	// Step 5 - Assign the fuel tank
+	thruster->linkToFuelTank(fuelTank);
+	// Step 6 - Set flow rate and eject speed
+	thruster->setThrusterEfficiency(massFlowRate, massEjectSpeed);
+	// Step 7 - Create and assign the keyboard controller
+	thruster->setController(new QThrusterKeyboardController(key));
+	// Step 8 - Assign the thruster to the shuttle
+	mShuttle->addThruster(thruster, position, Trigo<>::deg2rad(orientationDegrees));
+
+	mSelectPropulseurValue->addItem(QString("Propulseur %1").arg(mShuttle->thrusters().size()-1));
+}
+
+void OngletPropulseurs::changeThrusterQuantity() {
+	if (mNombrePropulseurs->value() > mShuttle->thrusters().size()) {
+		addNewThruster();
+		//shuttleInitialize(mShuttle);
+	}
+	else if (mNombrePropulseurs->value() < mShuttle->thrusters().size()) {
+
+	}
 }

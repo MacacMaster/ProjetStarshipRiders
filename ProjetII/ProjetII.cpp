@@ -51,7 +51,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mOngletRes = new OngletReservoir(mShuttle, mShuttleEditor->outputScale());
 
 	//Onglet Propulseur
-	mOngletPropulseurs = new OngletPropulseurs(mShuttle);
+	mOngletPropulseurs = new OngletPropulseurs(mShuttle, mShuttleEditor->outputScale());
 
 
 
