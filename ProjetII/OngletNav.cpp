@@ -1,5 +1,5 @@
 #include "OngletNav.h"
-
+#include <ProjetII.h>
 
 OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
 	: QWidget(parent)
@@ -37,8 +37,16 @@ OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
 	mSimulCenter->setChecked(true);
 	mSimulationOptions->layout()->addWidget(mSimulCenter);
 
+	//Status
+	mStatusGB = new QGroupBox("Status");
+	mStatusGB->setLayout(new QVBoxLayout);
+	mStatus = new QLabel;
+	mStatusGB->layout()->addWidget(mStatus);
+	
+
 	//Widget de l'onglet (principal)
 	navWidgetLayout = new QVBoxLayout;
+	navWidgetLayout->addWidget(mStatusGB);
 	navWidgetLayout->addWidget(navSelectionGB);
 	navWidgetLayout->addWidget(mSimulationOptions);
 	navWidgetLayout->addStretch();
@@ -70,4 +78,8 @@ void OngletNav::simulCenter(int state)
 		mView->resetTarget();
 	}
 	mSimulCenter->blockSignals(false);
+}
+
+void OngletNav::updateStatus(QString status) {
+	mStatus->setText(status);
 }

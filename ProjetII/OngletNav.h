@@ -21,6 +21,8 @@ public:
 	OngletNav(QSceneViewController * view, QWidget *parent = nullptr);
 	~OngletNav();
 
+	void updateStatus(QString status);
+
 	QRealValueBox* navBoxTaille() { return mNavBoxTaille; }
 
 private:
@@ -34,6 +36,9 @@ private:
 
 	QGroupBox *mSimulationOptions;
 	QCheckBox *mSimulCenter;
+
+	QGroupBox *mStatusGB;
+	QLabel *mStatus;
 protected slots:
 	void simulCenter(int state);
 

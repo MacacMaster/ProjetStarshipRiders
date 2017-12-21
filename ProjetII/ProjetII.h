@@ -20,10 +20,11 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QCombobox>
-#include "OngletNav.h"
-#include "OngletVehicule.h"
-#include "OngletReservoir.h"
-#include "OngletPropulseurs.h"
+#include <OngletNav.h>
+#include <OngletVehicule.h>
+#include <OngletReservoir.h>
+#include <OngletPropulseurs.h>
+#include <QShuttlePostgresqlDatabase.h>
 #include <iostream>
 
 class ProjetII
@@ -47,6 +48,7 @@ public:
 		QKeySequence const & key);
 
 	QShuttle *shuttle() { return mShuttle; }
+	
 	//void paint();
 
 
@@ -63,7 +65,7 @@ private:
 	QShuttleFuelTank *mShuttleFuelTank;
 	QTabWidget *mTabWidget;
 
-	OngletNav *ongletNav;
+	OngletNav *mOngletNav;
 	OngletVehicule *mOngletVeh;
 	OngletReservoir *mOngletRes;
 	OngletPropulseurs *mOngletPropulseurs;
@@ -71,6 +73,8 @@ private:
 	QColorBox *colorBox;
 	QTimer mTimer;
 
+	QShuttlePostgresqlDatabase db;
+	QString dbstatus;
 
 private slots:
 	void tic();
@@ -79,6 +83,7 @@ protected slots:
 	void updateShuttleFromGUI();
 	void updateThrustersFromGUI();
 	void createNav();
+	void dbConnect();
 };
 
 #endif //PROJETII_H
