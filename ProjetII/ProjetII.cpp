@@ -48,6 +48,7 @@ ProjetII::ProjetII(QWidget *parent)
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
 	//Onglet pour Reservoir
+	mOngletRes = new OngletReservoir(mShuttle);
 
 	//Onglet Propulseur
 	mOngletPropulseurs = new OngletPropulseurs(mShuttle);
@@ -69,7 +70,7 @@ ProjetII::ProjetII(QWidget *parent)
 	//Create TabView
 	mTabWidget->addTab(mOngletNav, tr("Navette"));
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
-	mTabWidget->addTab(new QLabel, tr("Reservoir"));
+	mTabWidget->addTab(mOngletRes, tr("Reservoir"));
 	mTabWidget->addTab(mOngletPropulseurs, tr("Propulseurs"));
 	mTabWidget->addTab(new QLabel, tr("Simulation"));
 	mTabWidget->addTab(new QLabel, tr("Potato"));
