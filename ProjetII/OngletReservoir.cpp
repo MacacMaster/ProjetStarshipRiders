@@ -4,12 +4,13 @@
 
 
 
-OngletReservoir::OngletReservoir(QShuttle * shuttle, QWidget *parent)
-	: QWidget(parent)
+OngletReservoir::OngletReservoir(QShuttle * shuttle, qreal scale, QWidget *parent)
+	:	QWidget(parent)
 {
 
+	mShuttle = shuttle;
 	mShuttleFuelTank = shuttle->fuelTanks().at(0);
-
+	mScale = scale;
 
 
 	mCapacity = new QIntValueBox;
@@ -28,13 +29,13 @@ OngletReservoir::OngletReservoir(QShuttle * shuttle, QWidget *parent)
 	mWidth->addTitle("Largeur", 120);
 	mWidth->addUnit("m", 50);
 	mWidth->setSpinFixedWidth(75);
-	mWidth->setRange(0, 1);
+	mWidth->setRange(0.001, 1);
 
 	mHeight = new QRealValueBox;
 	mHeight->addTitle("Hauteur", 120);
 	mHeight->addUnit("m", 50);
 	mHeight->setSpinFixedWidth(75);
-	mHeight->setRange(0, 1);
+	mHeight->setRange(0.001, 1);
 
 	mHPosition = new QRealValueBox;
 	mHPosition->addTitle("Position horizontale", 120);
@@ -96,11 +97,22 @@ OngletReservoir::OngletReservoir(QShuttle * shuttle, QWidget *parent)
 	setMaximumHeight(350);
 	setLayout(mWidgetLayout);
 
-	//Connections 
-
-
 	//Initialisation
 	tankInitialize(shuttle);
+	
+	//Connections 
+	connect(mCapacity, &QIntValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mLevel, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mWidth, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mHeight, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mHPosition, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mVPosition, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mOrientation, &QRealValueBox::valueChanged, this, &OngletReservoir::changeTank);
+	connect(mColorTank, &QColorBox::colorChanged, this, &OngletReservoir::changeTank);
+	connect(mColorOutline, &QColorBox::colorChanged, this, &OngletReservoir::changeTank);
+	connect(mColorFuel, &QColorBox::colorChanged, this, &OngletReservoir::changeTank);
+	
+
 }
 
 
@@ -113,13 +125,27 @@ void OngletReservoir::tankInitialize(QShuttle * shuttle)
 
 	mCapacity->setValue(mShuttleFuelTank->capacity());
 	mLevel->setValue(mShuttleFuelTank->fuelLevel());
-	mWidth->setValue(static_cast<QShuttleFuelTankShape*>(shuttle->shape())->width());
-	mHeight->setValue(static_cast<QShuttleFuelTankShape*>(shuttle->shape())->height());
-	mHPosition->setValue(shuttle->linearPosition().rx());
-	mVPosition->setValue(shuttle->linearPosition().ry());
-	mOrientation->setValue(Trigo<>::deg2rad(shuttle->angularPosition()));
+	mWidth->setValue(static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->width()/mScale);
+	mHeight->setValue(static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->height()/mScale);
+	mHPosition->setValue(mShuttleFuelTank->linearPosition().rx()/mScale);
+	mVPosition->setValue(mShuttleFuelTank->linearPosition().ry()/mScale);
+	mOrientation->setValue(Trigo<>::deg2rad(mShuttleFuelTank->angularPosition()));
 
-	mColorTank->setColor(shuttle->shape()->brush().color());
-	mColorOutline->setColor(shuttle->shape()->pen().color());
+	mColorTank->setColor(mShuttleFuelTank->shape()->brush().color());
+	mColorOutline->setColor(mShuttleFuelTank->shape()->pen().color());
 	mColorFuel->setColor(mShuttleFuelTank->fuelColor());
+}
+
+void OngletReservoir::changeTank() {
+	
+	mShuttleFuelTank->setCapacity(mCapacity->value());
+	mShuttleFuelTank->fill(mLevel->value());
+	static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->setWidth(mWidth->value()*mScale);
+	static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->setHeight(mHeight->value()*mScale);
+	mShuttleFuelTank->setLinearPosition(QPointF(mHPosition->value()*mScale, mVPosition->value()*mScale));
+	mShuttleFuelTank->setAngularPosition(Trigo<>::rad2deg(mOrientation->value()));
+
+	mShuttleFuelTank->shape()->setBrush(mColorTank->color());
+	mShuttleFuelTank->shape()->setPen(mColorOutline->color());
+	mShuttleFuelTank->setFuelColor(mColorFuel->color());
 }
