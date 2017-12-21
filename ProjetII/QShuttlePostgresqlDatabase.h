@@ -2,6 +2,13 @@
 #define Q_SHUTTLE_POSTGRESQL_DATABASE_H
 
 
+/*
+ADD PATH
+C:\Program Files\PostgreSQL\9.6\lib
+C:\Program Files\PostgreSQL\9.6\bin
+
+*/
+
 #include "QShuttleDatabase.h"
 #include <QSqlQueryInsertion.h>
 class QPolygonalBody;
