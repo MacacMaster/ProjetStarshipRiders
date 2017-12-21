@@ -22,7 +22,7 @@ class OngletReservoir : public QWidget
 	Q_OBJECT
 
 public:
-	OngletReservoir(QShuttle * shuttle, QWidget *parent = nullptr);
+	OngletReservoir(QShuttle * shuttle, qreal scale, QWidget *parent = nullptr);
 	~OngletReservoir();
 
 	void tankInitialize(QShuttle *shuttle);
@@ -36,9 +36,16 @@ private:
 	QRealValueBox *mLevel;
 	QRealValueBox *mWidth, *mHeight, *mHPosition, *mVPosition, *mOrientation;
 	QColorBox *mColorTank, *mColorOutline, *mColorFuel;
+	QShuttle *mShuttle;
+	qreal mScale;
+
+public slots:
+	void changeTank();
 
 signals:
 	void valueChanged();
+	void colorChanged();
+
 };
 
 #endif //ONGLET_RESERVOIR_H
