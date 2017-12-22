@@ -17,6 +17,10 @@ public:
 
 	static QPolygonF isoscelesTriangle(qreal base, qreal height, bool tipInsteadOfBase = true);
 	static QPolygonF equilateralPolygon(size_t n, qreal sideLength, qreal thetaDegrees);
+	static QPolygonF arrow4Points(qreal length = 1.0, qreal relativeWidth = 1.0, qreal relativeRecess = 0.15, bool tipInsteadOfBase = true);
+
+	//void transform(QPolygonF & polygon, QPointF const & translation, qreal rotation = 1.0, qreal scaling = 1.0);
+
 };
 
 

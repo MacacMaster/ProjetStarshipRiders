@@ -21,6 +21,9 @@ public:
 	void setPixmap(QPixmap const & pixmap, QPointF const & hotPoint = QPointF(0.0, 0.0));
 	void setPixmap(QImage const & image, QPointF const & hotPoint = QPointF(0.0, 0.0));
 
+	QPointF hotPoint() const;
+	void setHotPoint(QPointF const & hotPoint);
+
 	virtual QShapeBody * clone() const override;
 
 	virtual void draw(QPainter & painter) const override;

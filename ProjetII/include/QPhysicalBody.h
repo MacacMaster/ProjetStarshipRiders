@@ -113,6 +113,15 @@ public:
 	//! Détruit la forme assignée. 
 	virtual ~QPhysicalBody();
 
+	//! \brief Copie constructeur retiré. [to do]
+	QPhysicalBody(QPhysicalBody const & body) = delete;
+	//! \brief Opérateur d'assignation retiré. [to do]
+	QPhysicalBody& operator=(QPhysicalBody const & body) = delete;
+	//! \brief Copie constructeur de déplacement retiré. [to do]
+	QPhysicalBody(QPhysicalBody const && body) = delete;
+	//! \brief Opérateur d'assignation de déplacement retiré. [to do]
+	QPhysicalBody& operator=(QPhysicalBody const && body) = delete;
+
 	//! \brief Assigne une forme au corps courant. 
 	//!
 	//! La forme assignée possède toutes les informations cosmétiques et de répartition de la masse. 
@@ -159,9 +168,19 @@ public:
 	//! \brief Détache tous les corps enfants et les détruit.
 	void eraseBodies();
 
-	QList<QPhysicalBody*> const & attachedBodiesUnder() const;
-	QList<QPhysicalBody*> const & attachedBodiesOver() const;
+	//! \brief Détache tous les enfants devant être retirés.
+	//!
+	//! Cette fonction détache tous les enfants qui doivent être retirée (_under_ et _over_). Tous les corps détachés sont retournés dans la liste et deviennent la responsabilité de la fonction appelante.
+	QList<QPhysicalBody*> detachChildToBeRemoved();
+	//! \brief Détache et détruit tous les enfants devant être retirés.
+	//!
+	//! Cette fonction détache et détruit tous les enfants qui doivent être retirée (_under_ et _over_).
+	void eraseChildToBeRemoved();
 
+	//! \brief Retourne la liste de tous les corps attachés (au dessous).
+	QList<QPhysicalBody*> const & attachedBodiesUnder() const;
+	//! \brief Retourne la liste de tous les corps attachés (au dessus).
+	QList<QPhysicalBody*> const & attachedBodiesOver() const;
 
 	//! \brief Ajoute une accélération linéaire appliquée au centroïde selon le référentiel monde.
 	void addExtLinearAcceleration(QPointF const & linAcceleration);								// Acceleration applied uniformly on the body	=> using center of mass
@@ -186,10 +205,40 @@ public:
 	void addIntForce(QPointF const & from, QPointF const & force);								// Force applied from a specific point			=> linear acceleration + angular acceleration applied at center of mass 
 	//  not considered yet - to do : void addTorque(QPointF const & from, qreal torque);		// currently, rotations are applied from the center of mass
 
-	// Effectue la transformation de coordonnées d'un point exprimé selon les coordonnées monde en coordonnées local.
+	//! \brief Effectue la transformation des coordonnées d'un point.
+	//!
+	//! La transformation correspond au passage du référentiel monde vers le référentiel local.
 	QPointF mapFromScene(QPointF const & point);
-	// Effectue la transformation de coordonnées d'un point exprimé selon les coordonnées local en coordonnées monde.
+	//! \brief Effectue la transformation des coordonnées d'un point.
+	//!
+	//! La transformation correspond au passage du référentiel local vers le référentiel monde.
 	QPointF mapToScene(QPointF const & point);
+	//! \brief Effectue la transformation des coordonnées d'un point.
+	//!
+	//! La transformation correspond au passage du référentiel parent vers le référentiel local. S'il n'y a pas de parent assigné, le référentiel monde est alors considéré comme parent.
+	QPointF mapFromParent(QPointF const & point);
+	//! \brief Effectue la transformation des coordonnées d'un point.
+	//!
+	//! La transformation correspond au passage du référentiel local vers le référentiel parent. S'il n'y a pas de parent assigné, le référentiel monde est alors considéré comme parent.
+	QPointF mapToParent(QPointF const & point);
+
+	//! \brief Effectue la transformation d'une orientation.
+	//!
+	//! La transformation correspond au passage du référentiel monde vers le référentiel local.
+	qreal mapFromScene(qreal orientation);
+	//! \brief Effectue la transformation d'une orientation.
+	//!
+	//! La transformation correspond au passage du référentiel local vers le référentiel monde.
+	qreal mapToScene(qreal orientation);
+	//! \brief Effectue la transformation d'une orientation.
+	//!
+	//! La transformation correspond au passage du référentiel parent vers le référentiel local. S'il n'y a pas de parent assigné, le référentiel monde est alors considéré comme parent.
+	qreal mapFromParent(qreal orientation);
+	//! \brief Effectue la transformation d'une orientation.
+	//!
+	//! La transformation correspond au passage du référentiel local vers le référentiel parent. S'il n'y a pas de parent assigné, le référentiel monde est alors considéré comme parent.
+	qreal mapToParent(qreal orientation);
+
 
 	//! \brief Dessine la forme avec _painter_.
 	void paint(QPainter & painter) const;
@@ -200,7 +249,18 @@ public:
 	virtual void stepSimulation(double deltaT);
 
 	//! \brief Indique si un corps doit être retiré de la simulation. 
+	//!
+	//! Cette fonction peut être surchargée et, selon certaines conditions, indiquer si l'objet courant peut être retiré de la simulation. Par défaut, cette fonction retourne _false_.
 	virtual bool toBeRemoved();
+
+	//! \brief Retourne le temps écoulé depuis l'insertion de l'objet dans la simulation. 
+	qreal timeLived() const;
+
+	//! \brief Retourne le temps pendant lequel le corps peut exister dans la simulation. Une valeur négative indique que le corps peut vivre indéfiniment.
+	qreal mayLivedUntil() const;
+
+	//! \brief Détermine le temps pendant lequel le corps peut exister dans la simulation. Une valeur négative indique que le corps peut vivre indéfiniment.
+	void setMayLivedUntil(qreal mayLivedUntil);
 
 	//! \brief Retourne le nom du corps.
 	QString name() const;
@@ -319,7 +379,18 @@ protected:
 	//! Tous ces corps sont dessinés après le corps courant. Ils sont donc affiché à l'avant plan selon leur ordre d'insertion dans la liste.
 	QList<QPhysicalBody*> mAttachedBodiesOver;
 
+	//! \brief Le temps écoulé depuis l'insertion de l'objet dans la simulation. 
+	//!
+	//! Correspond à la somme de tous les _elapsedTime_ accumulé par les appels de _stepSimulation_.
+	qreal mTimeLived;
+
+	//! \brief Le temps pendant lequel le corps existe dans la simulation. 
+	//!
+	//! Une valeur négative indique que le corps peut vivre indéfiniment (ce qui est la valeur par défaut).
+	qreal mMayLivedUntil;
+
 private:
+	QTransform transformToParent();
 	QTransform transformToScene();
 };
 
