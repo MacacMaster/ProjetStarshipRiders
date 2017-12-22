@@ -45,6 +45,7 @@ public:
 
 	void tic(qreal elapsedTime);
 
+	void addBody(QPhysicalBody * body);
 	void addThrustersFume(QShuttleThrusterFume * body);
 	void setOneShuttle(QShuttle * shuttle);
 

@@ -3,6 +3,7 @@
 
 
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 
 #include <QPointF>
@@ -15,6 +16,8 @@
 #include <QKeySequence>
 
 #include <QRegularExpression>
+
+#include <QSqlQuery>
 
 
 class QUtilities final
@@ -41,6 +44,8 @@ public:
 
 	static bool sqlGetId(QString const & tableName, QString const & idColumnName, QString const & fieldColumnName, QVariant const & fieldValue, QVariant & id);
 	static bool sqlGetIds(QString const & tableName, QString const & idColumnName, QString const & fieldColumnName, QVariant const & fieldValue, QList<QVariant> & ids);
+	static bool sqlGetIds(QSqlQuery & query, QList<QVariant> & ids);
+	static bool sqlGetIds(QSqlQuery & query, QString & ids);
 
 private:
 	static QRegularExpression sRegExpCapturePoint;
