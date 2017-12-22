@@ -1,7 +1,9 @@
+
 #include <OngletVehicule.h>
 #include <OngletNav.h>
 OngletVehicule::OngletVehicule(QShuttle * shuttle,OngletNav * nav,QWidget *parent)
-	: QWidget(parent)
+	: QWidget(parent),
+	mShuttle{ shuttle }
 {
 
 	mNav = nav;

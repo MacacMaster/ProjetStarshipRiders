@@ -14,6 +14,7 @@
 #include "OngletVehicule.h"
 #include <QShuttleFuelTank.h>
 #include<QIntValueBox.h>
+#include<QPolygonEditor.h>
 
 
 
@@ -22,7 +23,7 @@ class OngletReservoir : public QWidget
 	Q_OBJECT
 
 public:
-	OngletReservoir(QShuttle * shuttle, qreal scale, QWidget *parent = nullptr);
+	OngletReservoir(OngletVehicule *shuttleTab, QWidget *parent = nullptr);
 	~OngletReservoir();
 
 	void tankInitialize(QShuttle *shuttle);
@@ -37,7 +38,7 @@ private:
 	QRealValueBox *mWidth, *mHeight, *mHPosition, *mVPosition, *mOrientation;
 	QColorBox *mColorTank, *mColorOutline, *mColorFuel;
 	QShuttle *mShuttle;
-	qreal mScale;
+	QPolygonEditor *mShuttleEditor;
 
 public slots:
 	void changeTank();

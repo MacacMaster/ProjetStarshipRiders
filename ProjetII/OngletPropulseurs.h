@@ -14,13 +14,14 @@
 #include "QIntValueBox.h"
 #include <QtWidgets/QKeySequenceEdit>
 #include <QtWidgets/QCombobox>
+#include"OngletVehicule.h"
 
 class OngletPropulseurs : public QWidget
 {
 	Q_OBJECT
 
 public:
-	OngletPropulseurs(QShuttle * shuttle, qreal scale, QWidget *parent = nullptr);
+	OngletPropulseurs(OngletVehicule *shuttleTab, QWidget *parent = nullptr);
 	
 
 
@@ -30,6 +31,7 @@ public:
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
 	void shuttleInitialize(QShuttle * shuttle);
 	void addNewThruster();
+	void removeThruster();
 
 	//Reads shuttle info and shows in GUI
 
@@ -39,7 +41,7 @@ private:
 	QGroupBox *mPropulsion;
 	QGroupBox *mPropulseur;
 	QGroupBox *mFormePropulseur;
-	QPolygonEditor *mPolygonEditor;
+	QPolygonEditor *mPolygonEditor, *mShuttleEditor;
 	QLabel *mSelectPropulseurLabel;
 	QComboBox *mSelectPropulseurValue;
 	QLabel *mToucheControleLabel;
@@ -52,7 +54,7 @@ private:
 	QRealValueBox *mPositionV;
 	QRealValueBox *mOrientation;
 	QIntValueBox *mNombrePropulseurs;
-	qreal mScale;
+	
 
 	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);
 	
