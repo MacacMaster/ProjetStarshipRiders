@@ -1,8 +1,10 @@
-#include "OngletVehicule.h"
-
-OngletVehicule::OngletVehicule(QShuttle * shuttle,QWidget *parent)
+#include <OngletVehicule.h>
+#include <OngletNav.h>
+OngletVehicule::OngletVehicule(QShuttle * shuttle,OngletNav * nav,QWidget *parent)
 	: QWidget(parent)
 {
+
+	mNav = nav;
 	//PolygonEditor (Needs Resize)
 	mPolygonEditor = new QPolygonEditor(200);
 	
@@ -39,6 +41,7 @@ OngletVehicule::OngletVehicule(QShuttle * shuttle,QWidget *parent)
 
 	connect(mPolygonEditor, &QPolygonEditor::polygonUpdated, this, &OngletVehicule::polygonChanged);
 	connect(mLineNom, &QLineEdit::textChanged, this, &OngletVehicule::polygonChanged);
+	connect(mLineNom,	static_cast<void(QLineEdit::*)(const QString &)>(&QLineEdit::textChanged), this, &OngletVehicule::setShuttleSelectedName);
 	connect(mMasseSurfacique, &QRealValueBox::valueChanged, this, &OngletVehicule::polygonChanged);
 
 	shuttleInitialize(shuttle);
@@ -63,10 +66,19 @@ void OngletVehicule::shuttleChange(QShuttle * shuttle)
 //Sets Shuttle Info to GUI
 void OngletVehicule::shuttleInitialize(QShuttle * shuttle)
 {
+	mPolygonEditor->blockSignals(true);
+	mLineNom->blockSignals(true);
 	mPolygonEditor->setPolygon(static_cast<QPolygonalBody*>(shuttle->shape())->polygon());
 	//mPolygonEditor->setOutputScale(shuttle->shape()->);
 	mLineNom->setText(shuttle->name());
-	mMasseSurfacique->setValue(shuttle->surfaceMass());
+	mMasseSurfacique->setValueQuiet(shuttle->surfaceMass());
 	mPolygonEditor->setBrush(shuttle->shape()->brush());	//sychronize colorBox color with shuttle color
 	mPolygonEditor->setPen(shuttle->shape()->pen());
+
+	mPolygonEditor->blockSignals(false);
+	mLineNom->blockSignals(false);
+}
+
+void OngletVehicule::setShuttleSelectedName(const QString & selected) {
+	mNav->setShuttleSelectedName(selected);
 }

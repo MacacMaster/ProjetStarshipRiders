@@ -49,6 +49,7 @@ public:
 	//Getters
 	QShuttle *shuttle() { return mShuttle; }
 	QShuttlePostgresqlDatabase * db() { return mDB; }
+	QStringList * getDB() {	return &mDB->availableShuttles();}
 	//void paint();
 
 
@@ -88,6 +89,7 @@ protected slots:
 	void dbLoadShuttle();
 	void dbNewShuttle();
 	void dbDeleteShuttle();
+	void updateStatus(QString message);
 };
 
 #endif //PROJETII_H

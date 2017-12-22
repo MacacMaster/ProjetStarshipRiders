@@ -46,7 +46,7 @@ ProjetII::ProjetII(QWidget *parent)
 	//Onglet Navette predeterminee
 	mOngletNav = new OngletNav(mSceneControl,this);
 	//Onglet Vehicule
-	mOngletVeh = new OngletVehicule(mShuttle);
+	mOngletVeh = new OngletVehicule(mShuttle, mOngletNav);
 	//Onglet pour Reservoir
 	mOngletRes = new OngletReservoir(mShuttle, mShuttleEditor->outputScale());
 
@@ -81,7 +81,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mTabWidget->addTab(new QLabel, tr("Proto"));
 
 	mOngletNav->setNavList(mDB->availableShuttles());
-	mOngletNav->updateStatus(mDBStatus);
+	mOngletNav->updateStatus(mDBStatus, mShuttle);
 }
 
 void ProjetII::generate_Horizon_6t_k()
@@ -259,22 +259,32 @@ void ProjetII::dbConnect() {
 }
 
 void ProjetII::dbSaveShuttle() {
+	
 	mOngletNav->updateStatus("Shuttle saved");
 }
 void ProjetII::dbLoadShuttle() {
-	if (mDB->retrieveShuttle(mShuttle, mOngletNav->selectedName(), mSceneModel)) {
-		mOngletVeh->shuttleInitialize(mShuttle);
-		mOngletNav->updateStatus("Shuttle loaded");
-	}
+	if (mDB->retrieveShuttle(mShuttle, mOngletNav->selectedName(), mSceneModel)) 
+		updateStatus("Shuttle loaded");
+	else
+		updateStatus("ERROR : Shuttle could not be loaded");
 }
 void ProjetII::dbNewShuttle() {
-	if (mDB->insertShuttle(mShuttle)) {
-		mOngletNav->updateStatus("Shuttle Created");
-		mOngletNav->setNavList(mDB->availableShuttles());
-	}
+	if (mDB->insertShuttle(mShuttle)) 
+		updateStatus("Shuttle Created");
 	else
-		mOngletNav->updateStatus("Shuttle already exists");
+		updateStatus("ERROR : Shuttle name already exists");
 }
 void ProjetII::dbDeleteShuttle() {
-	mOngletNav->updateStatus("Shuttle deleted");
+	if (mDB->deleteShuttle(mOngletNav->selectedName()))
+		updateStatus("Shuttle deleted");
+	else 
+		updateStatus("ERROR : Shuttle could not be deleted");
+	
+}
+
+
+void ProjetII::updateStatus(QString message) {
+	mOngletNav->setNavList(mDB->availableShuttles());
+	mOngletNav->updateStatus(message,mShuttle);
+	mOngletVeh->shuttleInitialize(mShuttle);
 }

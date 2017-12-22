@@ -293,19 +293,68 @@ bool QShuttlePostgresqlDatabase::insertShuttle(QShuttle * shuttle)
 
 bool QShuttlePostgresqlDatabase::updateShuttle(QShuttle * shuttle, QString const & name)
 {
-	// to do
-	return false;
+	
+	return true;
 }
 
 bool QShuttlePostgresqlDatabase::deleteShuttle(QString const & name)
 {
-	// to do
-	//DELETE FROM thruster	WHERE shuttle = 1;
-	//DELETE FROM fueltank	WHERE shuttle = 1;
-	//DELETE FROM shape		WHERE shuttle = 1;//need to find the id of the shuttle
-	//DELETE FROM shuttle		WHERE id = 1;
+	mDatabase.transaction();
 
-	return false;
+	//QList<QVariant> shapeIds;
+	QString shapeIds;
+	mAllShapesFromShuttle.bindValue(0, name);
+	mAllShapesFromShuttle.bindValue(1, name);
+	if (!QUtilities::sqlGetIds(mAllShapesFromShuttle, shapeIds)) {
+		return false;
+	}
+
+	// Delete all thrusters
+	mDeleteThrusterFromShuttle.bindValue(0, name);
+	if (!mDeleteThrusterFromShuttle.exec()) {
+		qDebug() << "QSqlQuery error : " << mDeleteThrusterFromShuttle.lastError().text();
+		mDatabase.rollback();
+		return false;
+	}
+
+	// Delete the fuel tank
+	mDeleteFuelTankFromShuttle.bindValue(0, name);
+	if (!mDeleteFuelTankFromShuttle.exec()) {
+		qDebug() << "QSqlQuery error : " << mDeleteFuelTankFromShuttle.lastError().text();
+		mDatabase.rollback();
+		return false;
+	}
+
+	// Delete the shuttle
+	QSqlQuery query4;
+	mDeleteShuttle.bindValue(0, name);
+	if (!mDeleteShuttle.exec()) {
+		qDebug() << "QSqlQuery error : " << mDeleteShuttle.lastError().text();
+		mDatabase.rollback();
+		return false;
+	}
+
+	// Delete all the shapes (including shuttle + thrusters)
+	// ... first approach
+	//for (auto id : shapeIds) {
+	//	mDeleteShapeFromId.bindValue(0, id);
+	//	if (!mDeleteShapeFromId.exec()) {
+	//		qDebug() << "QSqlQuery error : " << mDeleteShapeFromId.lastError().text();
+	//		mDatabase.rollback();
+	//		return false;
+	//	}
+	//}
+	// ... second approach
+	QString sqlDeleteShapeFromId(QString("DELETE FROM shape WHERE id IN (%1);").arg(shapeIds));
+	QSqlQuery queryDeleteShapeFromId;
+	if (!queryDeleteShapeFromId.exec(sqlDeleteShapeFromId)) {
+		qDebug() << "QSqlQuery error : " << mDeleteShapeFromId.lastError().text();
+		mDatabase.rollback();
+		return false;
+	}
+
+	mDatabase.commit();
+	return true;
 }
 
 void QShuttlePostgresqlDatabase::initializePreparedQueries()
@@ -314,6 +363,47 @@ void QShuttlePostgresqlDatabase::initializePreparedQueries()
 	mInsertShapeQuery.prepare(mDatabase, "Shape", "BrushColor", "PenColor", "PenWidth", "PolygonalShape");
 	mInsertFuelTankQuery.prepare(mDatabase, "FuelTank", "Shuttle", "Capacity", "FuelLevel", "TankWidth", "TankHeight", "LinearPosition", "AngularPosition", "FuelColor");
 	mInsertThrusterQuery.prepare(mDatabase, "Thruster", "Shuttle", "Shape", "FuelTank", "MassFlowRate", "MassEjectedSpeed", "LinearPosition", "AngularPosition", "KeySequence");
+
+	mAllShapesFromShuttle = QSqlQuery(mDatabase);
+	mAllShapesFromShuttle.prepare(R".(
+SELECT shape 
+	FROM shuttle 
+	WHERE name = ?
+UNION
+SELECT thruster.shape 
+	FROM thruster 
+		INNER JOIN shuttle 
+			ON thruster.shuttle = shuttle.id 
+	WHERE shuttle.name = ? 
+).");
+	mDeleteThrusterFromShuttle = QSqlQuery(mDatabase);
+	mDeleteThrusterFromShuttle.prepare(R".(
+DELETE FROM thruster 
+	WHERE id IN (	SELECT thruster.id 
+						FROM thruster 
+							INNER JOIN shuttle 
+								ON thruster.shuttle = shuttle.id 
+						WHERE shuttle.name = ?);
+).");
+	mDeleteFuelTankFromShuttle = QSqlQuery(mDatabase);
+	mDeleteFuelTankFromShuttle.prepare(R".(
+DELETE FROM fueltank 
+	WHERE id IN (	SELECT fueltank.id 
+						FROM fueltank 
+							INNER JOIN shuttle 
+								ON fueltank.shuttle = shuttle.id 
+						WHERE shuttle.name = ?);
+).");
+	mDeleteShuttle = QSqlQuery(mDatabase);
+	mDeleteShuttle.prepare(R".(
+DELETE FROM shuttle 
+	WHERE name = ?;
+).");
+	mDeleteShapeFromId = QSqlQuery(mDatabase);
+	mDeleteShapeFromId.prepare(R".(
+DELETE FROM shape 
+	WHERE id = ?;
+).");
 }
 
 bool QShuttlePostgresqlDatabase::insertShape(QPolygonalBody * shape, int & newShapeId)

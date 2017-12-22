@@ -11,6 +11,7 @@
 #include <QtWidgets/QGroupBox>
 #include "QRealValueBox.h"
 #include <QtWidgets/QLineEdit>
+#include <OngletNav.h>
 
 
 class OngletVehicule : public QWidget
@@ -18,7 +19,7 @@ class OngletVehicule : public QWidget
 	Q_OBJECT
 
 public:
-	OngletVehicule(QShuttle * shuttle,QWidget *parent = nullptr);
+	OngletVehicule(QShuttle * shuttle, OngletNav * nav, QWidget *parent = nullptr);
 	~OngletVehicule();
 
 	QPolygonEditor * polygonEditor() { return mPolygonEditor; }
@@ -26,9 +27,12 @@ public:
 	QRealValueBox *surfaceMass() { return mMasseSurfacique; }
 
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
-	void shuttleInitialize(QShuttle * shuttle);//Reads shuttle info and shows in GUI
+	void shuttleInitialize(QShuttle * shuttle);
+	void setShuttleSelectedName(const QString & selected);
+	//Reads shuttle info and shows in GUI
 
 private:
+	OngletNav * mNav;
 	QGroupBox *mCharacteristiquesGB;
 	QPolygonEditor *mPolygonEditor;
 	QGroupBox *mPolygonEditorGB;

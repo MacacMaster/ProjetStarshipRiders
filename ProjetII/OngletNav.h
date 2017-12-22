@@ -4,7 +4,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QCheckBox>
 
-
+#include <QStringListModel>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QGroupBox>
 #include "QRealValueBox.h"
@@ -23,7 +23,9 @@ public:
 
 	void setNavList(QStringList list);
 
+	void setShuttleSelectedName(const QString &);
 	void updateStatus(QString status);
+	void updateStatus(QString status, QShuttle * shuttle);
 	QString selectedName();
 	QRealValueBox* navBoxTaille() { return mNavBoxTaille; }
 
@@ -41,6 +43,9 @@ private:
 
 	QGroupBox *mStatusGB;
 	QLabel *mStatus;
+	QGroupBox *mSelectedShuttleGB;
+	QLabel *mSelectedShuttle;
+	QStringListModel * shuttleList;
 
 	QGroupBox * mDatabaseGB;
 	QGroupBox * mShuttleOptions;
