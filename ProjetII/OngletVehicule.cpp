@@ -1,8 +1,10 @@
 #include "OngletVehicule.h"
 
 OngletVehicule::OngletVehicule(QShuttle * shuttle,QWidget *parent)
-	: QWidget(parent)
+	:	QWidget(parent),
+		mShuttle{shuttle}
 {
+
 	//PolygonEditor (Needs Resize)
 	mPolygonEditor = new QPolygonEditor(200);
 	

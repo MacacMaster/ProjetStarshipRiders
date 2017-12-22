@@ -6,11 +6,11 @@
 TODO : Set Massflow
 */
 
-OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, qreal scale, QWidget *parent)
-	: QWidget(parent)
+OngletPropulseurs::OngletPropulseurs(OngletVehicule *shuttleTab, QWidget *parent)
+	:	QWidget(parent),
+		mShuttle{ shuttleTab->shuttle() },
+		mShuttleEditor{shuttleTab->polygonEditor()}
 {
-	mShuttle = shuttle;
-	mScale = scale;
 
 	//Propulsion
 	mPropulsion = new QGroupBox(tr("Propulsion"));
@@ -94,7 +94,7 @@ OngletPropulseurs::OngletPropulseurs(QShuttle * shuttle, qreal scale, QWidget *p
 	mMainLayout->addWidget(mPropulseur);
 	mMainLayout->addWidget(mFormePropulseur);
 
-	shuttleInitialize(shuttle);
+	shuttleInitialize(mShuttle);
 
 	connect(mSelectPropulseurValue, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &OngletPropulseurs::thrusterChanged);
 	connect(mToucheControleValue, &QKeySequenceEdit::editingFinished, this, &OngletPropulseurs::polygonChanged);
@@ -180,13 +180,12 @@ void OngletPropulseurs::addNewThruster()
 	QBrush brush(QColor(128, 128, 128));
 	QPen pen(QPen(Qt::white, 0.5));
 	QKeySequence key{ "" };
-	//QSceneModel * model;
 
 
 	// Step 1 - Build thruster with a polygonal shape (instead of the default circular shape) 
 	QShuttleThruster * thruster = new QShuttleThruster(new QPolygonalBody);
 	// Step 2 - Assign the polygonal shape - in this case, we use an equilateral polygon
-	static_cast<QPolygonalBody*>(thruster->shape())->setPolygon(QPolygonFactory::equilateralPolygon(3, mScale, 0.0));
+	static_cast<QPolygonalBody*>(thruster->shape())->setPolygon(QPolygonFactory::equilateralPolygon(3, mShuttleEditor->outputScale(), 0.0));
 	// Step 3 - Assign brush and pen to the shape
 	thruster->shape()->setBrush(brush);
 	thruster->shape()->setPen(pen);
@@ -202,12 +201,18 @@ void OngletPropulseurs::addNewThruster()
 	mSelectPropulseurValue->addItem(QString("Propulseur %1").arg(mShuttle->thrusters().size()-1));
 }
 
+void OngletPropulseurs::removeThruster() {
+	mSelectPropulseurValue->removeItem(mShuttle->thrusters().size() - 1);
+	mShuttle->removeThruster(mShuttle->thrusters()[mShuttle->thrusters().size() - 1]);
+
+}
+
 void OngletPropulseurs::changeThrusterQuantity() {
 	if (mNombrePropulseurs->value() > mShuttle->thrusters().size()) {
 		addNewThruster();
-		//shuttleInitialize(mShuttle);
+		
 	}
 	else if (mNombrePropulseurs->value() < mShuttle->thrusters().size()) {
-
+		removeThruster();
 	}
 }

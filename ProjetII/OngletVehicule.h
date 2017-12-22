@@ -24,11 +24,13 @@ public:
 	QPolygonEditor * polygonEditor() { return mPolygonEditor; }
 	QLineEdit *name() { return mLineNom; }
 	QRealValueBox *surfaceMass() { return mMasseSurfacique; }
+	QShuttle *shuttle() { return mShuttle; }
 
 	void shuttleChange(QShuttle * shuttle);//Updates Shuttle info from GUI
 	void shuttleInitialize(QShuttle * shuttle);//Reads shuttle info and shows in GUI
 
 private:
+	QShuttle *mShuttle;
 	QGroupBox *mCharacteristiquesGB;
 	QPolygonEditor *mPolygonEditor;
 	QGroupBox *mPolygonEditorGB;

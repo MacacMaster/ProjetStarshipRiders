@@ -48,10 +48,10 @@ ProjetII::ProjetII(QWidget *parent)
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle);
 	//Onglet pour Reservoir
-	mOngletRes = new OngletReservoir(mShuttle, mShuttleEditor->outputScale());
+	mOngletRes = new OngletReservoir(mOngletVeh);
 
 	//Onglet Propulseur
-	mOngletPropulseurs = new OngletPropulseurs(mShuttle, mShuttleEditor->outputScale());
+	mOngletPropulseurs = new OngletPropulseurs(mOngletVeh);
 
 
 
