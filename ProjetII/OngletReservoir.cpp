@@ -121,18 +121,20 @@ OngletReservoir::~OngletReservoir()
 
 void OngletReservoir::tankInitialize(QShuttle * shuttle)
 {
+	mColorFuel->blockSignals(true);
 	
-	mCapacity->setValue(mShuttleFuelTank->capacity());
-	mLevel->setValue(mShuttleFuelTank->fuelLevel());
-	mWidth->setValue(static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->width()/mShuttleEditor->outputScale());
-	mHeight->setValue(static_cast<QRectangularBody*>(mShuttleFuelTank->shape())->height()/mShuttleEditor->outputScale());
-	mHPosition->setValue(mShuttleFuelTank->linearPosition().rx()/mShuttleEditor->outputScale());
-	mVPosition->setValue(mShuttleFuelTank->linearPosition().ry()/mShuttleEditor->outputScale());
-	mOrientation->setValue(Trigo<>::rad2deg(mShuttleFuelTank->angularPosition()));
+	mCapacity->setValueQuiet(shuttle->fuelTanks()[0]->capacity());
+	mLevel->setValueQuiet(shuttle->fuelTanks()[0]->fuelLevel());
+	mWidth->setValueQuiet(static_cast<QRectangularBody*>(shuttle->fuelTanks()[0]->shape())->width()/mShuttleEditor->outputScale());
+	mHeight->setValueQuiet(static_cast<QRectangularBody*>(shuttle->fuelTanks()[0]->shape())->height()/mShuttleEditor->outputScale());
+	mHPosition->setValueQuiet(shuttle->fuelTanks()[0]->linearPosition().rx()/mShuttleEditor->outputScale());
+	mVPosition->setValueQuiet(shuttle->fuelTanks()[0]->linearPosition().ry()/mShuttleEditor->outputScale());
+	mOrientation->setValueQuiet(Trigo<>::rad2deg(shuttle->fuelTanks()[0]->angularPosition()));
+	mColorFuel->setColor(shuttle->fuelTanks()[0]->fuelColor());
+	mColorTank->setColor(shuttle->fuelTanks()[0]->shape()->brush().color());
+	mColorOutline->setColor(shuttle->fuelTanks()[0]->shape()->pen().color());
 
-	mColorTank->setColor(mShuttleFuelTank->shape()->brush().color());
-	mColorOutline->setColor(mShuttleFuelTank->shape()->pen().color());
-	mColorFuel->setColor(mShuttleFuelTank->fuelColor());
+	mColorFuel->blockSignals(false);
 }
 
 void OngletReservoir::changeTank() {

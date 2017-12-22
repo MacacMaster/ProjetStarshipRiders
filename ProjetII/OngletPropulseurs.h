@@ -15,6 +15,7 @@
 #include <QtWidgets/QKeySequenceEdit>
 #include <QtWidgets/QCombobox>
 #include"OngletVehicule.h"
+#include <QStringListModel>
 
 class OngletPropulseurs : public QWidget
 {
@@ -54,6 +55,7 @@ private:
 	QRealValueBox *mPositionV;
 	QRealValueBox *mOrientation;
 	QIntValueBox *mNombrePropulseurs;
+	QStringListModel * thrusterList;
 	
 
 	void createReal(QRealValueBox * qReal, QString title, QString unit, qreal rangeMin = 0, qreal rangeMax = 99.99, int32_t precision = 3);

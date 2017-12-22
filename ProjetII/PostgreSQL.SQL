@@ -1,6 +1,7 @@
 /********************************************************************************
 * M-A Ramsay
 * Starship.sql
+* BD Creation Script
 ********************************************************************************/
 
 DROP TABLE IF EXISTS Shuttle,FuelTank,Thruster,Shape CASCADE;
@@ -57,12 +58,40 @@ ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_SHAPE_FK 	FOREIGN KEY (Shape) 	REF
 ALTER TABLE Thruster 	ADD CONSTRAINT THRUSTER_FUELTANK_FK FOREIGN KEY (FuelTank)	REFERENCES FuelTank;
 
 /*
-SELECT shuttle.id,surfacemass,linearposition,linearspeed,angularposition,angularspeed,brushcolor,pencolor,penwidth,polygonalshape FROM shuttle LEFT OUTER JOIN shape ON (shuttle.shape = shape.id) WHERE name LIKE 'lalala';
+	Prepared statements for PostgreSQL
+	
+	mSelectShuttleQuery
+		("SELECT shuttle.id,surfacemass, linearposition, linearspeed, angularposition, angularspeed, brushcolor, pencolor, penwidth, polygonalshape 
+		FROM shuttle LEFT OUTER JOIN shape ON(shuttle.shape = shape.id) 
+		WHERE name LIKE ?");
+		
+	mSelectFuelTankQuery
+		("SELECT capacity,fuellevel,tankwidth,tankheight,linearposition,angularposition,fuelcolor 
+		FROM fueltank 
+		WHERE shuttle = ?");
+		
+	mSelectThrusterQuery
+		("SELECT massflowrate, massejectedspeed, linearposition, angularposition, brushcolor, pencolor, penwidth, polygonalshape,keysequence 
+		FROM thruster 
+		LEFT OUTER JOIN shape ON(thruster.shape = shape.id) 
+		WHERE shuttle = ?");
+		
+	
+	mUpdateShuttleQuery.prepare(
+		"UPDATE shuttle 
+		SET shuttle.id = ?,surfacemass = '?',  linearposition = '?',  linearspeed = '?',  angularposition = '?',  angularspeed = '?',  brushcolor = '?',  pencolor = '?',  penwidth = '?',  polygonalshape = '?'
+		LEFT OUTER JOIN shape ON(shuttle.shape = shape.id) 
+		WHERE name LIKE ?");
+	
+	mUpdateFuelTankQuery.prepare(	
+		"UPDATE fueltank
+		SET capacity = '?', fuellevel = '?', tankwidth = '?', tankheight = '?', linearposition = '?', angularposition = '?', fuelcolor = '?'
+		WHERE shuttle = ?");
+	
+	mUpdateThrusterQuery.prepare(	
+		"UPDATE  thruster
+		SET massflowrate = '?',  massejectedspeed = '?',  linearposition = '?',  angularposition = '?',  brushcolor = '?',  pencolor = '?',  penwidth = '?',  polygonalshape = '?', keysequence = '?'
+		LEFT OUTER JOIN shape ON(thruster.shape = shape.id) 
+		WHERE shuttle = ?");
 
-
-SELECT fueltank,massflowrate,massejectedspeed,linearposition,angularposition,brushcolor,pencolor,penwidth,polygonalshape 
-FROM thruster 
-LEFT OUTER JOIN shape ON (thruster.shape = shape.id)
-WHERE shuttle = 1
-*/
-
+	*/

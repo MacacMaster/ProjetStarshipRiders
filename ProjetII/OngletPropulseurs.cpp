@@ -131,6 +131,8 @@ void OngletPropulseurs::shuttleChange(QShuttle * shuttle)
 	temp->setSurfaceMass(mMasseSurfacique->value());
 	temp->setThrusterEfficiency(mDebitCarb->value(), mEjectionCarb->value());
 	//
+	temp->shape()->setBrush(mPolygonEditor->brush());
+	temp->shape()->setPen(mPolygonEditor->pen());
 	temp->setController(new QThrusterKeyboardController(mToucheControleValue->keySequence()));
 
 }
@@ -138,13 +140,17 @@ void OngletPropulseurs::shuttleChange(QShuttle * shuttle)
 //Sets Shuttle Info to GUI
 void OngletPropulseurs::shuttleInitialize(QShuttle * shuttle)
 {
+	thrusterList = new QStringListModel;
 	mShuttle = shuttle;
 	int32_t i{ 0 };
+	QStringList temp;
 	for (auto a : shuttle->thrusters()) {
-		mSelectPropulseurValue->addItem(QString("Propulseur %1").arg(i));
+		temp.append(QString("Propulseur %1").arg(i));
 		//mSelectPropulseurValue->addItem(a->name());
 		++i;
 	}
+	thrusterList->setStringList(temp);
+	mSelectPropulseurValue->setModel(thrusterList);
 	mNombrePropulseurs->setValue(i);
 	thrusterChanged(0);
 }

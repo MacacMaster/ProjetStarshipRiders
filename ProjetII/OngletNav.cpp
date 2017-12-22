@@ -1,13 +1,14 @@
 #include "OngletNav.h"
 #include <ProjetII.h>
 
-OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
+OngletNav::OngletNav(QSceneViewController *view, QShuttle * shuttle, QWidget *parent)
 	: QWidget(parent)
 {
 	
 	//navettesList.push_back(static_cast<ProjetII*>(parent)->shuttle()->name());
 	mView = view;
 	mView->targetShuttle();
+	mShuttle = shuttle;
 	//Ensemble pour la taille
 	mNavBoxTaille = new QRealValueBox;
 	mNavBoxTaille->addUnit("pixels");
@@ -31,7 +32,9 @@ OngletNav::OngletNav(QSceneViewController *view, QWidget *parent)
 	mSimulCenter = new QCheckBox("Centrer le vaisseau");
 	mSimulCenter->setTristate(false);
 	mSimulCenter->setChecked(true);
+	mReinitialize = new QPushButton("Reinitialize");
 	mSimulationOptions->layout()->addWidget(mSimulCenter);
+	mSimulationOptions->layout()->addWidget(mReinitialize);
 
 	//Status
 	mStatusGB = new QGroupBox("Status");
@@ -84,11 +87,11 @@ Qt::Unchecked	0	The item is unchecked.
 Qt::PartiallyChecked	1	The item is partially checked. Items in hierarchical models may be partially checked if some, but not all, of their children are checked.
 Qt::Checked	2	The item is checked.
 */
-	//connect(navBtnCreer, &QPushButton::clicked, this, &OngletNav::navCreated);
-	connect(mNewShuttle, &QPushButton::clicked, this,	&OngletNav::newShuttleSignal);
-	connect(mLoadShuttle, &QPushButton::clicked, this,	&OngletNav::loadShuttleSignal);
-	connect(mSaveShuttle, &QPushButton::clicked, this,	&OngletNav::saveShuttleSignal);
-	connect(mDeleteShuttle, &QPushButton::clicked, this,&OngletNav::deleteShuttleSignal);
+	connect(mReinitialize,	&QPushButton::clicked, this, &OngletNav::reinitialize);
+	connect(mNewShuttle,	&QPushButton::clicked, this, &OngletNav::newShuttleSignal);
+	connect(mLoadShuttle,	&QPushButton::clicked, this, &OngletNav::loadShuttleSignal);
+	connect(mSaveShuttle,	&QPushButton::clicked, this, &OngletNav::saveShuttleSignal);
+	connect(mDeleteShuttle, &QPushButton::clicked, this, &OngletNav::deleteShuttleSignal);
 }
 
 OngletNav::~OngletNav()
@@ -121,6 +124,14 @@ void OngletNav::updateStatus(QString status) {
 void OngletNav::updateStatus(QString status,QShuttle * shuttle) {	
 	setShuttleSelectedName(shuttle->name());
 	updateStatus(status);
+}
+
+void OngletNav::reinitialize() {
+	mShuttle->setAngularPosition(0);
+	mShuttle->setAngularSpeed(0);
+	mShuttle->setLinearPosition(QPointF(0,0));
+	mShuttle->setLinearSpeed(QPointF(0, 0));
+
 }
 
 QString OngletNav::selectedName() { return mComboBox->currentText(); }

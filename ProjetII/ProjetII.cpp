@@ -44,7 +44,7 @@ ProjetII::ProjetII(QWidget *parent)
 
 
 	//Onglet Navette predeterminee
-	mOngletNav = new OngletNav(mSceneControl,this);
+	mOngletNav = new OngletNav(mSceneControl,mShuttle);
 	//Onglet Vehicule
 	mOngletVeh = new OngletVehicule(mShuttle, mOngletNav);
 	//Onglet pour Reservoir
@@ -78,7 +78,7 @@ ProjetII::ProjetII(QWidget *parent)
 	mTabWidget->addTab(mOngletVeh, tr("Vehicule"));
 	mTabWidget->addTab(mOngletRes, tr("Reservoir"));
 	mTabWidget->addTab(mOngletPropulseurs, tr("Propulseurs"));
-	mTabWidget->addTab(new QLabel, tr("Proto"));
+	//mTabWidget->addTab(new QLabel, tr("Proto"));
 
 	mOngletNav->setNavList(mDB->availableShuttles());
 	mOngletNav->updateStatus(mDBStatus, mShuttle);
@@ -259,8 +259,10 @@ void ProjetII::dbConnect() {
 }
 
 void ProjetII::dbSaveShuttle() {
-	
-	mOngletNav->updateStatus("Shuttle saved");
+	if (mDB->updateShuttle(mShuttle, mOngletNav->selectedName()))
+		updateStatus("Shuttle Updated");
+	else
+		updateStatus("ERROR : NOT YET IMPLEMENTED");
 }
 void ProjetII::dbLoadShuttle() {
 	if (mDB->retrieveShuttle(mShuttle, mOngletNav->selectedName(), mSceneModel)) 
@@ -287,4 +289,6 @@ void ProjetII::updateStatus(QString message) {
 	mOngletNav->setNavList(mDB->availableShuttles());
 	mOngletNav->updateStatus(message,mShuttle);
 	mOngletVeh->shuttleInitialize(mShuttle);
+	mOngletPropulseurs->shuttleInitialize(mShuttle);
+	mOngletRes->tankInitialize(mShuttle);
 }

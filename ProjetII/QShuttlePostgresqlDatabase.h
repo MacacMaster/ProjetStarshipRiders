@@ -39,6 +39,7 @@ private:
 	QSqlQueryInsertion mInsertShapeQuery;
 	QSqlQueryInsertion mInsertFuelTankQuery;
 	QSqlQueryInsertion mInsertThrusterQuery;
+
 	QSqlQuery mAllShapesFromShuttle;
 	QSqlQuery mDeleteThrusterFromShuttle;
 	QSqlQuery mDeleteFuelTankFromShuttle;
